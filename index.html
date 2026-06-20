@@ -10,13 +10,13 @@
 <meta name="theme-color" content="#3f4d37">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Drop Index">
+<meta name="apple-mobile-web-app-title" content="Oil Index">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* =========================================================================
-   THE DROP INDEX — STYLES
+   THE OIL INDEX — STYLES
    ========================================================================= */
 
 :root{
@@ -125,6 +125,34 @@ h1,h2,h3,.display{font-family:'Fraunces', serif;}
   font-family:'Fraunces', serif;
   font-style:italic;
   font-weight:400;
+}
+
+.referral-link-wrap{
+  margin-top:1.2rem;
+  display:flex;
+  justify-content:center;
+}
+.referral-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.45rem;
+  padding:0.72rem 1.25rem;
+  border-radius:30px;
+  border:1px solid var(--gold);
+  background:rgba(176,141,62,0.12);
+  color:var(--moss-deep);
+  text-decoration:none;
+  font-size:0.88rem;
+  font-weight:600;
+  box-shadow:0 10px 24px -20px rgba(43,42,37,0.35);
+  transition:transform .25s ease, background .25s ease, color .25s ease;
+}
+.referral-link:hover, .referral-link:active{
+  transform:translateY(-2px);
+  background:var(--moss-deep);
+  color:var(--paper);
+  border-color:var(--moss-deep);
 }
 
 .doors{
@@ -563,9 +591,12 @@ a:focus-visible, button:focus-visible, input:focus-visible{
 <!-- ============ HOME VIEW ============ -->
 <div class="view active" id="home">
   <div id="leafContainer"></div>
-  <div class="eyebrow">Essential Oils Field Guide</div>
+  <div class="eyebrow">a reseller's field guide</div>
   <h1 class="home-title">The Oil <em>Index</em></h1>
   <p class="home-sub">A complete, searchable reference for working with doTERRA essential oils — browse every product with links back to doTERRA, describe how you feel to find a remedy, or explore hundreds of everyday uses.</p>
+  <div class="referral-link-wrap">
+    <a class="referral-link" href="https://referral.doterra.me/18847276" target="_blank" rel="noopener noreferrer">Save 25% by using this referral</a>
+  </div>
 
   <div class="doors">
     <div class="door" data-nav="libraryView">
@@ -624,7 +655,7 @@ a:focus-visible, button:focus-visible, input:focus-visible{
 <!-- ============ WHEEL VIEW ============ -->
 <div class="view" id="wheelView">
   <div class="topbar">
-    <button class="brand" data-nav="home"><span class="dot"></span> The Drop Index</button>
+    <button class="brand" data-nav="home"><span class="dot"></span> The Oil Index</button>
     <button class="back-btn" data-nav="home">← Home</button>
   </div>
   <div class="wheel-stage">
@@ -641,7 +672,7 @@ a:focus-visible, button:focus-visible, input:focus-visible{
 <!-- ============ RESULTS VIEW ============ -->
 <div class="view" id="resultsView">
   <div class="topbar">
-    <button class="brand" data-nav="home"><span class="dot"></span> The Oil  Index</button>
+    <button class="brand" data-nav="home"><span class="dot"></span> The Oil Index</button>
     <button class="back-btn" data-nav="wheelView">← Back to Wheel</button>
   </div>
   <div class="page-head">
@@ -655,7 +686,7 @@ a:focus-visible, button:focus-visible, input:focus-visible{
 <!-- ============ USES INDEX VIEW ============ -->
 <div class="view" id="usesView">
   <div class="topbar">
-    <button class="brand" data-nav="home"><span class="dot"></span> The Oil  Index</button>
+    <button class="brand" data-nav="home"><span class="dot"></span> The Oil Index</button>
     <button class="back-btn" data-nav="home">← Home</button>
   </div>
   <div class="page-head">
@@ -685,7 +716,7 @@ a:focus-visible, button:focus-visible, input:focus-visible{
 
 <script>
 /* =========================================================================
-   THE Oil  INDEX — DATA FILE
+   THE OIL INDEX — DATA FILE
    Product data sourced from doTERRA's official Spring/Summer 2026 Product
    Guide Price List (media.doterra.com) and doTERRA.com product pages.
    Links point to the live product pages on doterra.com for purchase.
@@ -1332,7 +1363,7 @@ const usesCategoryOrder = usesIndex.map(c => c.category).sort();
 </script>
 <script>
 /* =========================================================================
-   THE DROP INDEX — APP LOGIC
+   THE OIL INDEX — APP LOGIC
    ========================================================================= */
 
 (function(){
@@ -1755,7 +1786,7 @@ const usesCategoryOrder = usesIndex.map(c => c.category).sort();
     window.addEventListener('beforeinstallprompt', function(e){
       e.preventDefault();
       deferredInstallPrompt = e;
-      if(!localStorage.getItem('dropindex_install_dismissed')){
+      if(!localStorage.getItem('oilindex_install_dismissed')){
         banner.classList.add('show');
       }
     });
@@ -1775,7 +1806,7 @@ const usesCategoryOrder = usesIndex.map(c => c.category).sort();
     if(dismissBtn){
       dismissBtn.addEventListener('click', function(){
         banner.classList.remove('show');
-        try{ localStorage.setItem('dropindex_install_dismissed','1'); }catch(err){}
+        try{ localStorage.setItem('oilindex_install_dismissed','1'); }catch(err){}
       });
     }
 
