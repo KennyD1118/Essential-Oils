@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Oil Index — Essential Oils Reference</title>
+<meta name="description" content="A complete, searchable reference for doTERRA essential oils with suggested uses, a symptom-based finder, and an index of household and lifestyle uses for essential oils.">
+
+<!-- PWA -->
+<meta name="theme-color" content="#3f4d37">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Drop Index">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   THE DROP INDEX — STYLES
+   ========================================================================= */
+
+:root{
+  --paper:#f6f2ea;
+  --paper-deep:#efe8d9;
+  --ink:#2b2a25;
+  --moss:#5a6b4f;
+  --moss-deep:#3f4d37;
+  --terra:#b5562f;
+  --gold:#b08d3e;
+  --line:#d8cdb4;
+  --leaf-light:#8a9a6e;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter', sans-serif;
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+button, input{font-family:inherit;}
+
+.view{
+  display:none;
+  min-height:100vh;
+}
+.view.active{display:block;}
+/* Keep inactive views truly hidden even when later ID-specific rules set display:flex. */
+.view:not(.active){display:none !important;}
+.view.active#home{display:flex;}
+.view.active#wheelView{display:flex;}
+
+h1,h2,h3,.display{font-family:'Fraunces', serif;}
+
+/* ---------- texture ---------- */
+.grain{
+  position:fixed; inset:0; pointer-events:none; z-index:999;
+  opacity:0.035; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============ INSTALL BANNER ============ */
+.install-banner{
+  position:fixed; left:0; right:0; bottom:0; z-index:300;
+  background:var(--moss-deep); color:var(--paper);
+  padding:0.9rem 1.2rem calc(0.9rem + var(--safe-bottom));
+  display:none;
+  align-items:center; justify-content:space-between;
+  gap:1rem;
+  font-size:0.85rem;
+  box-shadow:0 -6px 20px rgba(0,0,0,0.15);
+}
+.install-banner.show{display:flex;}
+.install-banner button.install-cta{
+  background:var(--gold); color:var(--ink); border:none;
+  padding:0.55rem 1.1rem; border-radius:30px; font-weight:600;
+  font-size:0.82rem; cursor:pointer; white-space:nowrap;
+}
+.install-banner button.install-dismiss{
+  background:none; border:none; color:var(--paper); opacity:0.7;
+  font-size:1.2rem; cursor:pointer; padding:0.2rem;
+}
+
+/* ============ HOME ============ */
+#home{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:calc(6vh + var(--safe-top)) 6vw 6vh;
+  text-align:center;
+}
+.eyebrow{
+  font-size:0.72rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--moss-deep);
+  font-weight:600;
+  margin-bottom:1.4rem;
+}
+.eyebrow::before{content:"⸻ "; color:var(--gold);}
+.eyebrow::after{content:" ⸻"; color:var(--gold);}
+
+.home-title{
+  font-size:clamp(2.4rem, 8vw, 5.6rem);
+  font-weight:600;
+  line-height:0.98;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  max-width:18ch;
+}
+.home-title em{font-style:italic; color:var(--terra); font-weight:400;}
+.home-sub{
+  margin-top:1.6rem;
+  max-width:46ch;
+  font-size:1.05rem;
+  line-height:1.6;
+  color:#55534a;
+  font-family:'Fraunces', serif;
+  font-style:italic;
+  font-weight:400;
+}
+
+.doors{
+  margin-top:3.5rem;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.4rem;
+  width:100%;
+  max-width:920px;
+}
+@media (max-width:680px){ .doors{grid-template-columns:1fr;} }
+
+.door{
+  position:relative;
+  background:var(--paper-deep);
+  border:1px solid var(--line);
+  border-radius:2px;
+  padding:2rem 1.8rem;
+  text-align:left;
+  cursor:pointer;
+  overflow:hidden;
+  transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+.door:hover, .door:active{
+  transform:translateY(-3px);
+  box-shadow:0 18px 40px -20px rgba(43,42,37,0.35);
+  border-color:var(--gold);
+}
+.door-index{
+  font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--gold); font-weight:600; margin-bottom:1rem; display:block;
+}
+.door h2{font-size:1.5rem; font-weight:600; margin-bottom:0.5rem; color:var(--ink);}
+.door p{font-size:0.88rem; line-height:1.5; color:#5c5a50; max-width:32ch;}
+.door-arrow{
+  position:absolute; right:1.6rem; bottom:1.6rem;
+  font-size:1.4rem; color:var(--terra);
+  transition:transform .3s ease;
+}
+.door:hover .door-arrow{transform:translate(4px,-4px);}
+.door-glyph{
+  position:absolute; top:-10px; right:-10px;
+  font-size:5.5rem; opacity:0.08; line-height:1;
+  color:var(--moss-deep);
+  user-select:none;
+}
+
+.home-foot{
+  margin-top:3rem;
+  font-size:0.76rem;
+  color:#8a8678;
+  letter-spacing:0.03em;
+  max-width:46ch;
+  line-height:1.5;
+}
+
+.leaf{
+  position:absolute;
+  width:14px; height:24px;
+  background:var(--leaf-light);
+  border-radius:0 100% 0 100%;
+  opacity:0.25;
+  animation:drift 14s linear infinite;
+}
+@keyframes drift{
+  0%{transform:translateY(-40px) translateX(0) rotate(0deg); opacity:0;}
+  10%{opacity:0.25;}
+  90%{opacity:0.18;}
+  100%{transform:translateY(110vh) translateX(40px) rotate(140deg); opacity:0;}
+}
+
+/* ============ SHARED HEADER (sub pages) ============ */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:calc(1rem + var(--safe-top)) 1.4rem 1rem;
+  background:rgba(246,242,234,0.94);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  font-family:'Fraunces', serif;
+  font-weight:600;
+  font-size:1rem;
+  cursor:pointer;
+  display:flex; align-items:center; gap:0.5rem;
+  background:none; border:none; color:var(--ink); padding:0;
+}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--terra); display:inline-block;}
+.back-btn{
+  font-size:0.8rem;
+  letter-spacing:0.03em;
+  color:var(--moss-deep);
+  background:none; border:1px solid var(--line);
+  padding:0.5rem 1rem; border-radius:30px;
+  cursor:pointer;
+  display:flex; align-items:center; gap:0.4rem;
+  transition:all .25s ease;
+}
+.back-btn:hover{background:var(--moss-deep); color:var(--paper); border-color:var(--moss-deep);}
+
+.page-head{ padding:2.6rem 1.4rem 1.8rem; max-width:1100px; margin:0 auto; }
+.page-head h1{ font-size:clamp(1.8rem, 4.6vw, 3rem); font-weight:600; margin-bottom:0.7rem; }
+.page-head p{ color:#5c5a50; max-width:60ch; line-height:1.6; font-size:0.96rem; }
+
+/* ============ NAV TABS (bottom, mobile-first) ============ */
+.tabbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:80;
+  display:flex;
+  background:rgba(246,242,234,0.97);
+  backdrop-filter:blur(8px);
+  border-top:1px solid var(--line);
+  padding:0.4rem 0.6rem calc(0.4rem + var(--safe-bottom));
+}
+.tabbar-btn{
+  flex:1;
+  display:flex; flex-direction:column; align-items:center; gap:0.25rem;
+  background:none; border:none; cursor:pointer;
+  padding:0.4rem 0.2rem;
+  color:#9a9484;
+  font-size:0.68rem;
+  letter-spacing:0.02em;
+  border-radius:10px;
+  transition:color .2s ease;
+}
+.tabbar-btn .tab-icon{font-size:1.15rem; line-height:1;}
+.tabbar-btn.active{color:var(--moss-deep); font-weight:600;}
+body.has-tabbar .view{padding-bottom:4.2rem;}
+
+/* ============ LIBRARY (oil list) ============ */
+.lib-controls{
+  max-width:1100px; margin:0 auto;
+  padding:0 1.4rem 1.2rem;
+  display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;
+}
+.search-box{ flex:1; min-width:200px; position:relative; }
+.search-box input{
+  width:100%;
+  padding:0.8rem 1rem 0.8rem 2.5rem;
+  border:1px solid var(--line);
+  border-radius:30px;
+  background:var(--paper-deep);
+  font-size:0.92rem;
+  color:var(--ink);
+  outline:none;
+  transition:border-color .2s ease;
+}
+.search-box input:focus{border-color:var(--gold);}
+.search-box::before{
+  content:"⚲";
+  position:absolute; left:1rem; top:50%; transform:translateY(-50%) rotate(45deg);
+  color:#8a8678; font-size:0.95rem; pointer-events:none;
+}
+.filter-chip{
+  font-size:0.76rem; letter-spacing:0.02em;
+  padding:0.5rem 0.95rem;
+  border-radius:30px;
+  border:1px solid var(--line);
+  background:transparent;
+  color:#5c5a50;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all .2s ease;
+}
+.filter-chip.active, .filter-chip:hover{ background:var(--moss); color:#fff; border-color:var(--moss); }
+
+.sort-row{
+  max-width:1100px; margin:0 auto;
+  padding:0 1.4rem 0.4rem;
+  display:flex; align-items:center; gap:0.5rem;
+  font-size:0.78rem; color:#8a8678;
+}
+.sort-row select{
+  border:1px solid var(--line); background:var(--paper-deep);
+  border-radius:20px; padding:0.35rem 0.7rem; font-size:0.78rem; color:var(--ink);
+}
+
+.oil-grid{
+  max-width:1100px; margin:0 auto;
+  padding:0.5rem 1.4rem 3rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(270px,1fr));
+  gap:1rem;
+}
+.oil-card{
+  background:var(--paper-deep);
+  border:1px solid var(--line);
+  border-radius:3px;
+  padding:1.3rem 1.3rem 1.2rem;
+  cursor:pointer;
+  transition:transform .25s ease, box-shadow .25s ease;
+  display:flex;
+  flex-direction:column;
+  gap:0.45rem;
+  position:relative;
+}
+.oil-card:hover{ transform:translateY(-3px); box-shadow:0 16px 32px -22px rgba(43,42,37,0.4); }
+.oil-card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:0.5rem; }
+.oil-name{font-size:1.1rem; font-weight:600; font-family:'Fraunces',serif; line-height:1.25;}
+.oil-latin{font-size:0.7rem; font-style:italic; color:#8a8678; margin-top:0.1rem;}
+.oil-tag{
+  font-size:0.62rem; letter-spacing:0.04em; text-transform:uppercase;
+  background:rgba(176,141,62,0.15); color:var(--gold);
+  padding:0.22rem 0.5rem; border-radius:20px; white-space:nowrap;
+  font-weight:600;
+}
+.badge-row{display:flex; gap:0.35rem; flex-wrap:wrap;}
+.badge-top{font-size:0.6rem; letter-spacing:0.04em; text-transform:uppercase; background:var(--terra); color:#fff; padding:0.2rem 0.5rem; border-radius:20px; font-weight:600;}
+.badge-new{font-size:0.6rem; letter-spacing:0.04em; text-transform:uppercase; background:var(--moss); color:#fff; padding:0.2rem 0.5rem; border-radius:20px; font-weight:600;}
+.oil-desc{font-size:0.84rem; line-height:1.45; color:#5c5a50;}
+.oil-price{font-size:0.8rem; color:var(--moss-deep); font-weight:600; margin-top:0.1rem;}
+.oil-card-foot{
+  margin-top:auto; padding-top:0.5rem;
+  font-size:0.74rem; color:var(--moss-deep); font-weight:500;
+  display:flex; align-items:center; justify-content:space-between; gap:0.3rem;
+}
+.view-link{color:var(--terra); text-decoration:none; font-weight:600;}
+
+/* ============ OIL DETAIL MODAL ============ */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(43,42,37,0.55);
+  z-index:200; display:none;
+  align-items:flex-end; justify-content:center;
+  padding:0;
+  backdrop-filter:blur(2px);
+}
+.modal-overlay.active{display:flex;}
+.modal-box{
+  background:var(--paper);
+  max-width:560px; width:100%;
+  max-height:88vh; overflow-y:auto;
+  border-radius:16px 16px 0 0;
+  padding:2.2rem 1.6rem calc(2.2rem + var(--safe-bottom));
+  position:relative;
+  border:1px solid var(--line);
+}
+@media (min-width:640px){
+  .modal-overlay{align-items:center; padding:2rem;}
+  .modal-box{border-radius:8px; padding:2.6rem 2.4rem;}
+}
+.modal-close{
+  position:absolute; top:1rem; right:1rem;
+  background:var(--paper-deep); border:1px solid var(--line); border-radius:50%;
+  font-size:1.2rem;
+  cursor:pointer; color:#5c5a50; line-height:1;
+  width:34px;height:34px;
+  display:flex; align-items:center; justify-content:center;
+}
+.modal-box h2{font-size:1.7rem; font-weight:600; padding-right:2.5rem;}
+.modal-box .oil-latin{font-size:0.82rem; margin-bottom:1.2rem;}
+.modal-section{margin-top:1.2rem;}
+.modal-section h4{
+  font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--moss-deep); font-weight:600; margin-bottom:0.4rem;
+}
+.modal-section p{font-size:0.9rem; line-height:1.6; color:#3d3b34;}
+.pill-row{display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.3rem;}
+.pill{ font-size:0.74rem; background:var(--paper-deep); border:1px solid var(--line); padding:0.28rem 0.65rem; border-radius:20px; color:#3d3b34; }
+.modal-buy{
+  display:inline-flex; align-items:center; gap:0.5rem;
+  margin-top:1.4rem;
+  background:var(--moss-deep); color:var(--paper);
+  padding:0.75rem 1.3rem; border-radius:30px;
+  font-size:0.88rem; font-weight:600; text-decoration:none;
+  width:100%; justify-content:center;
+}
+.modal-meta{display:flex; gap:1.2rem; margin-top:0.3rem; font-size:0.8rem; color:#5c5a50; flex-wrap:wrap;}
+.modal-meta strong{color:var(--ink);}
+
+/* ============ WHEEL VIEW ============ */
+#wheelView{ min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+.wheel-stage{ width:100%; display:flex; flex-direction:column; align-items:center; padding:1.6rem 1.2rem 1rem; }
+.wheel-prompt{ text-align:center; margin-bottom:1.8rem; }
+.wheel-prompt h1{font-size:clamp(1.6rem,4vw,2.4rem); font-weight:600;}
+.wheel-prompt p{color:#5c5a50; margin-top:0.5rem; max-width:50ch; margin-inline:auto; font-size:0.92rem;}
+
+.wheel-wrap{
+  position:relative;
+  width:min(560px, 86vw);
+  height:min(560px, 86vw);
+  margin:0.5rem auto 1.5rem;
+}
+.wheel-center{
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:30%; height:30%;
+  border-radius:50%;
+  background:var(--moss-deep);
+  color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  text-align:center;
+  font-family:'Fraunces',serif;
+  font-size:0.85rem;
+  font-weight:600;
+  line-height:1.25;
+  z-index:5;
+  box-shadow:0 0 0 8px var(--paper), 0 0 0 9px var(--line);
+  padding:0.4rem;
+}
+.wedge{ position:absolute; top:0; left:0; width:100%; height:100%; clip-path:polygon(50% 50%, var(--p1), var(--p2)); cursor:pointer; }
+.wedge-fill{ position:absolute; inset:0; background:var(--seg-color); opacity:0.88; transition:opacity .25s ease; }
+.wedge:hover .wedge-fill, .wedge:active .wedge-fill{opacity:1;}
+.wedge-label{
+  position:absolute; transform:translate(-50%,-50%);
+  font-size:0.72rem; font-weight:600; color:#fff; text-align:center;
+  width:92px; pointer-events:none;
+  text-shadow:0 1px 4px rgba(0,0,0,0.35); line-height:1.2;
+}
+
+.wheel-list-fallback{ display:none; width:100%; max-width:600px; margin:0 auto; flex-direction:column; gap:0.6rem; padding-bottom:1rem; }
+.symptom-row-btn{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0.95rem 1.2rem;
+  background:var(--paper-deep);
+  border:1px solid var(--line);
+  border-radius:30px;
+  cursor:pointer;
+  font-size:0.92rem; font-weight:500; color:var(--ink);
+  transition:all .2s ease;
+}
+.symptom-row-btn:active{background:var(--moss); color:#fff;}
+.symptom-row-btn span.sw{width:10px;height:10px;border-radius:50%; display:inline-block; margin-right:0.7rem;}
+
+@media (max-width:540px){
+  .wheel-wrap{display:none;}
+  .wheel-list-fallback{display:flex;}
+}
+
+/* ============ RESULTS VIEW ============ */
+#resultsView .page-head{padding-bottom:0.8rem;}
+.result-grid{
+  max-width:1100px; margin:0 auto;
+  padding:0 1.4rem 3rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+  gap:1rem;
+}
+.result-card{
+  background:var(--paper-deep);
+  border:1px solid var(--line);
+  border-left:4px solid var(--terra);
+  border-radius:3px;
+  padding:1.3rem;
+  cursor:pointer;
+  transition:transform .2s ease;
+}
+.result-card:hover{transform:translateY(-3px);}
+.result-card h3{font-size:1.08rem; font-weight:600; margin-bottom:0.25rem;}
+.result-card .oil-latin{font-size:0.7rem;}
+.result-usage{
+  margin-top:0.65rem; font-size:0.84rem; line-height:1.5; color:#5c5a50;
+  padding-top:0.65rem; border-top:1px dashed var(--line);
+}
+.result-usage strong{color:var(--moss-deep); font-weight:600;}
+
+/* ============ USES INDEX VIEW ============ */
+.uses-cat-nav{
+  max-width:1100px; margin:0 auto;
+  padding:0 1.4rem 1.2rem;
+  display:flex; gap:0.5rem; flex-wrap:wrap;
+}
+.uses-cat-chip{
+  font-size:0.78rem;
+  padding:0.5rem 0.9rem;
+  border-radius:30px;
+  border:1px solid var(--line);
+  background:var(--paper-deep);
+  color:var(--ink);
+  cursor:pointer;
+  display:flex; align-items:center; gap:0.4rem;
+}
+.uses-cat-chip:hover, .uses-cat-chip.active{background:var(--moss); color:#fff; border-color:var(--moss);}
+
+.uses-list{ max-width:900px; margin:0 auto; padding:0 1.4rem 4rem; }
+.uses-category-block{ margin-bottom:2.6rem; scroll-margin-top:5.5rem; }
+.uses-category-head{
+  display:flex; align-items:center; gap:0.7rem;
+  margin-bottom:1rem;
+  padding-bottom:0.6rem;
+  border-bottom:2px solid var(--line);
+}
+.uses-category-head .icon{font-size:1.5rem;}
+.uses-category-head h2{font-size:1.4rem; font-weight:600;}
+.uses-category-head .cat-blurb{font-size:0.84rem; color:#8a8678; margin-top:0.15rem; font-style:italic;}
+
+.use-item{
+  background:var(--paper-deep);
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:1.2rem 1.3rem;
+  margin-bottom:0.8rem;
+}
+.use-item h3{font-size:1rem; font-weight:600; margin-bottom:0.4rem; font-family:'Fraunces',serif;}
+.use-item p{font-size:0.88rem; line-height:1.55; color:#4a483f; margin-bottom:0.6rem;}
+.use-item .pill-row{margin-top:0.2rem;}
+.use-item .pill{cursor:pointer;}
+.use-item .pill:hover{background:var(--moss); color:#fff; border-color:var(--moss);}
+
+/* ============ TOAST / DISCLAIMER ============ */
+.disclaimer-banner{
+  max-width:1100px; margin:0 auto;
+  padding:0 1.4rem 1.4rem;
+}
+.disclaimer-banner .box{
+  background:rgba(176,141,62,0.1);
+  border:1px solid rgba(176,141,62,0.35);
+  border-radius:6px;
+  padding:0.9rem 1.1rem;
+  font-size:0.8rem;
+  line-height:1.5;
+  color:#6b5a35;
+}
+
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:var(--paper);}
+::-webkit-scrollbar-thumb{background:var(--line); border-radius:10px;}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+}
+
+/* Focus visibility */
+a:focus-visible, button:focus-visible, input:focus-visible{
+  outline:2px solid var(--terra); outline-offset:2px;
+}
+
+</style>
+</head>
+<body class="has-tabbar">
+
+<div class="grain"></div>
+
+</div>
+
+<!-- ============ HOME VIEW ============ -->
+<div class="view active" id="home">
+  <div id="leafContainer"></div>
+  <div class="eyebrow">Essential Oils Field Guide</div>
+  <h1 class="home-title">The Oil <em>Index</em></h1>
+  <p class="home-sub">A complete, searchable reference for working with doTERRA essential oils — browse every product with links back to doTERRA, describe how you feel to find a remedy, or explore hundreds of everyday uses.</p>
+
+  <div class="doors">
+    <div class="door" data-nav="libraryView">
+      <div class="door-glyph">🌿</div>
+      <span class="door-index">01 — Reference</span>
+      <h2>The Library</h2>
+      <p>Every doTERRA oil and blend, with uses, pricing, and a direct link to purchase.</p>
+      <div class="door-arrow">→</div>
+    </div>
+    <div class="door" data-nav="wheelView">
+      <div class="door-glyph">◎</div>
+      <span class="door-index">02 — Find a Remedy</span>
+      <h2>The Symptom Wheel</h2>
+      <p>Choose what's bothering you. We'll point you to oils that may help.</p>
+      <div class="door-arrow">→</div>
+    </div>
+    <div class="door" data-nav="usesView">
+      <div class="door-glyph">📖</div>
+      <span class="door-index">03 — Get Inspired</span>
+      <h2>The Uses Index</h2>
+      <p>Cleaning, candles, fabric, cooking, and more — organized A to Z.</p>
+      <div class="door-arrow">→</div>
+    </div>
+  </div>
+
+  <div class="home-foot">For educational reference only — not a substitute for medical advice. Product links lead to doterra.com. This site is independently created and is not officially affiliated with or endorsed by doTERRA International.</div>
+</div>
+
+<!-- ============ LIBRARY VIEW ============ -->
+<div class="view" id="libraryView">
+  <div class="topbar">
+    <button class="brand" data-nav="home"><span class="dot"></span> The Oil Index</button>
+    <button class="back-btn" data-nav="home">← Home</button>
+  </div>
+  <div class="page-head">
+    <span class="eyebrow">the library</span>
+    <h1>Every product, briefly explained</h1>
+    <p>Tap any product to see its full profile, pricing, and a direct link to view or purchase it on doterra.com. Search by name, family, or use — or filter by category.</p>
+  </div>
+  <div class="lib-controls">
+    <div class="search-box"><input type="text" id="oilSearch" placeholder="Search products — e.g. lavender, citrus, sleep…"></div>
+  </div>
+  <div class="lib-controls" id="filterChips" style="padding-top:0;"></div>
+  <div class="sort-row">
+    <label for="sortSelect">Sort:</label>
+    <select id="sortSelect">
+      <option value="az">A–Z</option>
+      <option value="za">Z–A</option>
+      <option value="price-low">Price: Low to High</option>
+      <option value="price-high">Price: High to Low</option>
+    </select>
+  </div>
+  <div class="oil-grid" id="oilGrid"></div>
+</div>
+
+<!-- ============ WHEEL VIEW ============ -->
+<div class="view" id="wheelView">
+  <div class="topbar">
+    <button class="brand" data-nav="home"><span class="dot"></span> The Drop Index</button>
+    <button class="back-btn" data-nav="home">← Home</button>
+  </div>
+  <div class="wheel-stage">
+    <div class="wheel-prompt">
+      <span class="eyebrow">find a remedy</span>
+      <h1>What are you feeling?</h1>
+      <p>Choose the wedge that matches how you feel right now, and we'll surface the products worth reaching for.</p>
+    </div>
+    <div class="wheel-wrap" id="wheelWrap"></div>
+    <div class="wheel-list-fallback" id="wheelListFallback"></div>
+  </div>
+</div>
+
+<!-- ============ RESULTS VIEW ============ -->
+<div class="view" id="resultsView">
+  <div class="topbar">
+    <button class="brand" data-nav="home"><span class="dot"></span> The Oil  Index</button>
+    <button class="back-btn" data-nav="wheelView">← Back to Wheel</button>
+  </div>
+  <div class="page-head">
+    <span class="eyebrow">suggested oils</span>
+    <h1 id="resultsTitle">Oils for…</h1>
+    <p id="resultsSub"></p>
+  </div>
+  <div class="result-grid" id="resultsGrid"></div>
+</div>
+
+<!-- ============ USES INDEX VIEW ============ -->
+<div class="view" id="usesView">
+  <div class="topbar">
+    <button class="brand" data-nav="home"><span class="dot"></span> The Oil  Index</button>
+    <button class="back-btn" data-nav="home">← Home</button>
+  </div>
+  <div class="page-head">
+    <span class="eyebrow">the uses index</span>
+    <h1>A–Z of everyday essential oil uses</h1>
+    <p>General-purpose ideas for working essential oils into daily life — cleaning, cooking, candles, fabric care, and more. These uses apply to essential oils broadly, not exclusively doTERRA products. Tap any oil mentioned to see its full profile.</p>
+  </div>
+  <div class="uses-cat-nav" id="usesCatNav"></div>
+  <div class="disclaimer-banner">
+    <div class="box">Always dilute essential oils before applying to skin, patch-test new oils, keep oils out of reach of children and pets, and confirm an oil is labeled for internal use before consuming it. This index is general information, not medical or safety advice.</div>
+  </div>
+  <div class="uses-list" id="usesList"></div>
+</div>
+
+<!-- ============ OIL DETAIL MODAL ============ -->
+<div class="modal-overlay" id="oilModal">
+  <div class="modal-box" id="oilModalBox"></div>
+</div>
+
+<!-- ============ BOTTOM TAB BAR ============ -->
+<nav class="tabbar">
+  <button class="tabbar-btn active" data-target="home"><span class="tab-icon">⌂</span>Home</button>
+  <button class="tabbar-btn" data-target="libraryView"><span class="tab-icon">🌿</span>Library</button>
+  <button class="tabbar-btn" data-target="wheelView"><span class="tab-icon">◎</span>Wheel</button>
+  <button class="tabbar-btn" data-target="usesView"><span class="tab-icon">📖</span>Uses</button>
+</nav>
+
+<script>
+/* =========================================================================
+   THE Oil  INDEX — DATA FILE
+   Product data sourced from doTERRA's official Spring/Summer 2026 Product
+   Guide Price List (media.doterra.com) and doTERRA.com product pages.
+   Links point to the live product pages on doterra.com for purchase.
+   Prices/SKUs current as of Spring/Summer 2026 catalog — verify on-site,
+   as doTERRA updates pricing and availability periodically.
+   ========================================================================= */
+
+const DOTERRA_BASE = "https://www.doterra.com/US/en/p/";
+const DOTERRA_SHOP_BASE = "https://www.doterra.com/US/en/shop";
+
+/* -------------------------------------------------------------------------
+   SINGLE OILS
+   tags correspond to symptom/use-wheel keys defined in symptomMap below
+------------------------------------------------------------------------- */
+const singleOils = [
+  {name:"Arborvitae", latin:"Thuja plicata", slug:"arborvitae-oil", price:"$32.00", sku:"49360001", size:"5 mL", family:"Woody",
+    desc:"Smoky and woody with a grounding, calming character.",
+    uses:"Used to promote relaxation, ground racing thoughts, and as a natural addition to skincare routines.",
+    application:"Diffuse before meditation, apply diluted to skin, or add a drop to your daily moisturizer.",
+    tags:["sleep","skin"]},
+  {name:"Basil", latin:"Ocimum basilicum", slug:"basil-oil", price:"$44.00", sku:"30010001", size:"15 mL", family:"Herbaceous",
+    desc:"Sweet and slightly spicy — used to ease tension and support focus.",
+    uses:"Used to soothe occasional tension headaches and support a sense of calm focus during busy days.",
+    application:"Apply diluted to temples and the back of the neck, or diffuse during stressful moments.",
+    tags:["headache","energy"]},
+  {name:"Bergamot", latin:"Citrus bergamia", slug:"bergamot-oil", price:"$57.33", sku:"30790001", size:"15 mL", family:"Citrus",
+    desc:"Citrusy yet floral — calming rather than energizing, unlike most citrus oils.",
+    uses:"Used to ease occasional stress and uplift mood while promoting an overall sense of calm.",
+    application:"Diffuse in the evening, apply diluted to the chest, or add to a warm bath.",
+    tags:["mood","sleep"]},
+  {name:"Birch", latin:"Betula lenta", slug:"birch-oil", price:"$78.67", sku:"60222580", size:"5 mL", family:"Minty",
+    desc:"Sharp, wintergreen-like aroma traditionally tied to muscle comfort.",
+    uses:"Frequently used in massage to soothe muscle and joint discomfort after activity.",
+    application:"Apply diluted to sore areas; always dilute well and check label cautions before use.",
+    tags:["muscle"]},
+  {name:"Black Pepper", latin:"Piper nigrum", slug:"black-pepper-oil", price:"$30.67", sku:"41040001", size:"5 mL", family:"Spicy",
+    desc:"Warm and energizing with a sharp, peppery bite.",
+    uses:"Used to support healthy circulation, soothe occasional muscle tightness, and add warmth to massage blends.",
+    application:"Apply diluted to areas of tension, or diffuse with citrus oils for an energizing blend.",
+    tags:["muscle","energy"]},
+  {name:"Black Spruce", latin:"Picea mariana", slug:"black-spruce-oil", price:"$28.00", sku:"60206220", size:"5 mL", family:"Woody",
+    desc:"Fresh, forest-like, and grounding — reminiscent of a winter walk through pine.",
+    uses:"Used to support clear breathing and create a calming, grounded atmosphere.",
+    application:"Diffuse for a forest ambiance, or apply diluted to chest and back.",
+    tags:["breathing","sleep"]},
+  {name:"Blue Tansy", latin:"Tanacetum annuum", slug:"blue-tansy-oil", price:"$114.67", sku:"60203383", size:"5 mL", family:"Herbaceous",
+    desc:"Deep blue, sweet, and herbaceous — a rare and prized oil.",
+    uses:"Used to soothe occasional skin irritation and promote a calm, settled mood.",
+    application:"Apply heavily diluted to skin, or diffuse for a calming atmosphere.",
+    tags:["skin","sleep"]},
+  {name:"Cardamom", latin:"Elettaria cardamomum", slug:"cardamom-oil", price:"$41.33", sku:"49350001", size:"5 mL", family:"Spicy",
+    desc:"Warm, slightly sweet, and grounding with a respiratory affinity.",
+    uses:"Used to support healthy respiratory function and soothe occasional digestive discomfort.",
+    application:"Diffuse during cold months, add a drop to tea, or apply diluted to the chest.",
+    tags:["breathing","digestion"]},
+  {name:"Cassia", latin:"Cinnamomum cassia", slug:"cassia-oil", price:"$30.67", sku:"60213537", size:"15 mL", family:"Spicy",
+    desc:"Hot, sweet-spicy cousin of cinnamon — used sparingly and always diluted.",
+    uses:"Traditionally used to support immune health, especially during seasonal transitions.",
+    application:"Diffuse in small amounts; always heavily dilute before any skin contact.",
+    tags:["immune"]},
+  {name:"Cedarwood", latin:"Juniperus virginiana", slug:"cedarwood-oil", price:"$21.33", sku:"49300001", size:"15 mL", family:"Woody",
+    desc:"Warm, woody, and grounding — a calming nighttime staple.",
+    uses:"Used to support restful sleep, promote relaxation, and add a grounding note to skincare.",
+    application:"Diffuse before bed, apply diluted to the bottoms of the feet, or add to a scalp massage.",
+    tags:["sleep","skin"]},
+  {name:"Celery Seed", latin:"Apium graveolens", slug:"celery-seed-oil", price:"$50.67", sku:"60209677", size:"15 mL", family:"Herbaceous",
+    desc:"Earthy and slightly peppery with a culinary, digestive character.",
+    uses:"Used to support healthy digestion and as a flavorful addition to home cooking.",
+    application:"Apply diluted to the stomach, or add a single drop to savory recipes.",
+    tags:["digestion"]},
+  {name:"Cilantro", latin:"Coriandrum sativum", slug:"cilantro-oil", price:"$36.00", sku:"41850001", size:"15 mL", family:"Herbaceous",
+    desc:"Bright, green, and herbaceous with a fresh culinary aroma.",
+    uses:"Used to support healthy digestion and add a fresh, herbal note to recipes.",
+    application:"Add a drop to homemade salsas and dressings, or diffuse for a fresh kitchen scent.",
+    tags:["digestion"]},
+  {name:"Cinnamon Bark", latin:"Cinnamomum zeylanicum", slug:"cinnamon-bark-oil", price:"$46.67", sku:"30030001", size:"5 mL", family:"Spicy",
+    desc:"Warm and intensely spicy — a powerful immune-supportive oil used sparingly.",
+    uses:"Used to support immune health and add warmth to a diffuser blend, especially in colder months.",
+    application:"Diffuse in very small amounts; always heavily dilute before any skin contact.",
+    tags:["immune"]},
+  {name:"Citronella", latin:"Cymbopogon winterianus", slug:"citronella-oil", price:"$28.00", sku:"60209676", size:"15 mL", family:"Citrus",
+    desc:"Bright, grassy citronella aroma best known for outdoor use.",
+    uses:"Commonly used outdoors as a pleasant-smelling, plant-based alternative for warm-weather gatherings.",
+    application:"Diffuse outdoors, add to a DIY spray with water and witch hazel, or blend into candles.",
+    tags:["outdoors","cleaning"]},
+  {name:"Clary Sage", latin:"Salvia sclarea", slug:"clary-sage-oil", price:"$52.00", sku:"30420001", size:"15 mL", family:"Herbaceous",
+    desc:"Earthy and slightly floral, often associated with hormonal balance support.",
+    uses:"Used to support emotional balance, especially around the menstrual cycle, and to promote relaxation.",
+    application:"Apply diluted to the abdomen, diffuse in the evening, or add to a warm compress.",
+    tags:["hormonal","sleep"]},
+  {name:"Clove", latin:"Eugenia caryophyllata", slug:"clove-oil", price:"$29.33", sku:"30040001", size:"15 mL", family:"Spicy",
+    desc:"Warm, intense, and antiseptic-smelling — historically tied to dental comfort.",
+    uses:"Traditionally used to soothe occasional tooth and gum discomfort, and to support immune health.",
+    application:"Dilute heavily before any skin application; diffuse in small amounts during cold season.",
+    tags:["immune"]},
+  {name:"Copaiba", latin:"Copaifera reticulata, officinalis, coriacea, langsdorffii", slug:"copaiba-oil", price:"$52.00", sku:"60202178", size:"15 mL", family:"Woody",
+    desc:"Soft, woody, slightly sweet — a doTERRA top seller known for calming use.",
+    uses:"Used to support a calm mood, soothe occasional skin irritation, and promote relaxation when taken internally per label guidance.",
+    application:"Take in a veggie capsule per label directions, apply diluted to skin, or diffuse for grounding.",
+    tags:["sleep","skin"]},
+  {name:"Coriander", latin:"Coriandrum sativum", slug:"coriander-oil", price:"$34.67", sku:"30780001", size:"15 mL", family:"Herbaceous",
+    desc:"Bright, slightly citrusy — supportive of digestion.",
+    uses:"Used to ease occasional digestive discomfort and support healthy digestion overall.",
+    application:"Apply diluted to the stomach, or add a drop to a warm tea.",
+    tags:["digestion"]},
+  {name:"Cypress", latin:"Cupressus sempervirens and lusitanica", slug:"cypress-oil", price:"$25.33", sku:"60206972", size:"15 mL", family:"Woody",
+    desc:"Crisp and evergreen, often used to support circulation.",
+    uses:"Used to support healthy circulation, ease muscle tension after exercise, and ground racing thoughts.",
+    application:"Apply diluted to legs after a workout, diffuse for a grounding scent, or add to a massage oil.",
+    tags:["muscle","sleep"]},
+  {name:"Douglas Fir", latin:"Pseudotsuga menziesii", slug:"douglas-fir-oil", price:"$32.00", sku:"31590001", size:"5 mL", family:"Woody",
+    desc:"Crisp, forest-like, and grounding.",
+    uses:"Used to support clear breathing and create a grounding, calming atmosphere reminiscent of a forest walk.",
+    application:"Diffuse for a forest-like ambiance, or apply diluted to the chest.",
+    tags:["breathing","sleep"]},
+  {name:"Eucalyptus", latin:"Radiata, polybractea, kochii, loxophleba, globulus", slug:"eucalyptus-oil", price:"$30.67", sku:"60218408", size:"15 mL", family:"Camphoraceous",
+    desc:"Sharp, cooling, and clarifying — the classic 'breathe easy' oil.",
+    uses:"Commonly diffused to promote clear, easy breathing, and used in massage to soothe tired muscles.",
+    application:"Diffuse during seasonal months, add to a steam bowl, or apply diluted to the chest.",
+    tags:["breathing","muscle"]},
+  {name:"Fennel (Sweet)", latin:"Foeniculum vulgare", slug:"fennel-oil", price:"$24.00", sku:"41290001", size:"15 mL", family:"Herbaceous",
+    desc:"Sweet, licorice-like, and digestive in nature.",
+    uses:"Used to ease occasional bloating and support overall digestive comfort.",
+    application:"Apply diluted to the stomach in a clockwise motion, or diffuse after meals.",
+    tags:["digestion"]},
+  {name:"Frankincense", latin:"Boswellia carterii, sacra, papyrifera, frereana", slug:"frankincense-oil", price:"$105.33", sku:"30070001", size:"15 mL", family:"Resinous", topSeller:true,
+    desc:"Woody, warm, and grounding — often called the 'king' of essential oils.",
+    uses:"Used to support a sense of calm and grounding, promote healthy-looking skin, and as a meditative aid.",
+    application:"Apply diluted to the bottoms of feet, add to a moisturizer, or diffuse during meditation.",
+    tags:["sleep","skin"]},
+  {name:"Geranium", latin:"Pelargonium graveolens", slug:"geranium-oil", price:"$66.67", sku:"30090001", size:"15 mL", family:"Floral",
+    desc:"Rosy and green — a balancing oil popular in skincare.",
+    uses:"Used to support healthy, balanced-looking skin and to ease emotional tension.",
+    application:"Add to a facial moisturizer, diffuse for emotional balance, or apply diluted to skin.",
+    tags:["skin","sleep"]},
+  {name:"Ginger", latin:"Zingiber officinale", slug:"ginger-oil", price:"$69.33", sku:"60215119", size:"15 mL", family:"Spicy",
+    desc:"Warm, spicy, and grounding — closely tied to digestive comfort.",
+    uses:"Commonly used to ease occasional stomach upset, nausea, and support healthy digestion during travel.",
+    application:"Inhale directly from the bottle, apply diluted to the stomach, or add a drop to tea.",
+    tags:["digestion","nausea"]},
+  {name:"Grapefruit", latin:"Citrus x paradisi", slug:"grapefruit-oil", price:"$26.67", sku:"30100001", size:"15 mL", family:"Citrus",
+    desc:"Tart, juicy, and energizing — a popular metabolism-support oil.",
+    uses:"Used to uplift mood, curb occasional cravings, and energize a morning routine.",
+    application:"Diffuse in the morning, add a drop to water, or apply diluted to areas of concern.",
+    tags:["mood","energy"]},
+  {name:"Green Mandarin", latin:"Citrus nobilis", slug:"green-mandarin-oil", price:"$40.00", sku:"60205794", size:"15 mL", family:"Citrus",
+    desc:"Sweet, fresh, and slightly tart — a brighter take on classic mandarin.",
+    uses:"Used to uplift mood and create an energizing, fresh atmosphere.",
+    application:"Diffuse in the morning, or add a drop to a citrus-based cleaning spray.",
+    tags:["mood","cleaning"]},
+  {name:"Guaiacwood", latin:"Bulnesia sarmientoi", slug:"guaiacwood-oil", price:"$26.67", sku:"60217711", size:"15 mL", family:"Woody",
+    desc:"Soft, rosy-woody aroma with a smooth, balsamic character.",
+    uses:"Used to promote relaxation and add a grounding base note to diffuser blends.",
+    application:"Diffuse in the evening, or blend with citrus oils for a balanced aroma.",
+    tags:["sleep"]},
+  {name:"Helichrysum", latin:"Helichrysum italicum", slug:"helichrysum-oil", price:"$109.33", sku:"30410001", size:"5 mL", family:"Earthy",
+    desc:"Honey-like and rich — prized in skincare and recovery routines.",
+    uses:"Used to support healthy-looking skin, ease the appearance of blemishes, and soothe occasional minor discomfort.",
+    application:"Apply diluted directly to skin concerns, or blend into a facial serum.",
+    tags:["skin"]},
+  {name:"'Iliahi (Hawaiian Sandalwood)", latin:"Santalum paniculatum", slug:"iliahi-oil", price:"$100.00", sku:"41860001", size:"5 mL", family:"Woody",
+    desc:"Creamy and rich, a Hawaiian variety of sandalwood with deep grounding character.",
+    uses:"Used to support meditation, relaxation, and healthy-looking skin.",
+    application:"Diffuse during quiet moments, or apply diluted to pulse points.",
+    tags:["sleep","skin"]},
+  {name:"Jasmine", latin:"Jasminum grandiflorum", slug:"jasmine-oil", price:"$200.00", sku:"60217357", size:"2.5 mL", family:"Floral",
+    desc:"Rich, exotic floral with a luxurious, heady sweetness.",
+    uses:"Used to uplift mood and promote feelings of confidence and romance.",
+    application:"Diffuse for a special occasion, or apply diluted to pulse points as a natural perfume.",
+    tags:["mood"]},
+  {name:"Juniper Berry", latin:"Juniperus communis", slug:"juniper-berry-oil", price:"$30.67", sku:"49290001", size:"5 mL", family:"Woody",
+    desc:"Crisp and slightly piney — used for detox and clarity support.",
+    uses:"Used to support healthy circulation and a sense of mental clarity.",
+    application:"Diffuse for clarity, or apply diluted to skin during a massage.",
+    tags:["energy"]},
+  {name:"Lavender", latin:"Lavandula angustifolia", slug:"lavender-oil", price:"$38.67", sku:"30110001", size:"15 mL", family:"Floral", topSeller:true,
+    desc:"The classic calming oil — gentle, floral, and versatile.",
+    uses:"Often used to support relaxation, calm the mind before sleep, soothe occasional skin irritation, and ease tension after a long day.",
+    application:"Diffuse in the evening, apply diluted to pulse points, or add a few drops to a warm bath.",
+    tags:["sleep","skin"]},
+  {name:"Lemon", latin:"Citrus limon", slug:"lemon-oil", price:"$20.67", sku:"30120001", size:"15 mL", family:"Citrus", topSeller:true,
+    desc:"Bright, clean, and purifying with an uplifting citrus aroma.",
+    uses:"Used to brighten mood, support healthy digestion, and as a natural cleaning agent for surfaces.",
+    application:"Diffuse for an uplifting atmosphere, add to water in a glass container, or use in DIY cleaning sprays.",
+    tags:["mood","cleaning","digestion"]},
+  {name:"Lemon Eucalyptus", latin:"Eucalyptus citriodora", slug:"lemon-eucalyptus-oil", price:"$21.33", sku:"60209674", size:"15 mL", family:"Citrus",
+    desc:"Bright citrus-eucalyptus hybrid aroma, fresh and slightly sharp.",
+    uses:"Used outdoors for its pleasant fresh aroma and to support clear, easy breathing.",
+    application:"Diffuse outdoors, or add to a homemade outdoor spray.",
+    tags:["outdoors","breathing"]},
+  {name:"Lemongrass", latin:"Cymbopogon flexuosus", slug:"lemongrass-oil", price:"$20.00", sku:"30130001", size:"15 mL", family:"Citrus",
+    desc:"Sharp, grassy, and bright — supportive of clarity and digestion.",
+    uses:"Used to support healthy digestion, purify the air, and promote mental clarity.",
+    application:"Diffuse to purify a room, apply diluted to the stomach, or use in a massage blend.",
+    tags:["digestion","cleaning"]},
+  {name:"Lime", latin:"Citrus aurantifolia", slug:"lime-oil", price:"$22.67", sku:"30870001", size:"15 mL", family:"Citrus",
+    desc:"Tart, zesty, and refreshing citrus aroma.",
+    uses:"Used to uplift mood, refresh a space, and add a bright note to cleaning blends.",
+    application:"Diffuse for a refreshing aroma, or add to a DIY all-purpose cleaner.",
+    tags:["mood","cleaning"]},
+  {name:"Madagascar Vanilla", latin:"Vanilla planifolia", slug:"madagascar-vanilla-oil", price:"$53.33", sku:"60218012", size:"5 mL", family:"Sweet",
+    desc:"Warm, sweet, and comforting — true vanilla in oil form.",
+    uses:"Used to promote a comforting, cozy mood and add sweetness to skincare and diffuser blends.",
+    application:"Diffuse for a comforting aroma, or add to an unscented lotion.",
+    tags:["mood","sleep"]},
+  {name:"Marjoram", latin:"Origanum majorana", slug:"marjoram-oil", price:"$32.00", sku:"30140001", size:"15 mL", family:"Herbaceous",
+    desc:"Warm and slightly camphoraceous — a favorite for sore muscles.",
+    uses:"Frequently used in massage blends to ease muscle tension and support relaxation after physical activity.",
+    application:"Apply diluted to sore areas, blend into massage oil, or diffuse for a calming environment.",
+    tags:["muscle","sleep"]},
+  {name:"Melissa", latin:"Melissa officinalis", slug:"melissa-oil", price:"$128.00", sku:"30850001", size:"5 mL", family:"Citrus",
+    desc:"Delicate, lemony-floral, and rare — one of doTERRA's most prized oils.",
+    uses:"Used to support emotional balance and a calm, uplifted mood.",
+    application:"Diffuse for emotional support, or apply diluted to pulse points.",
+    tags:["mood","sleep"]},
+  {name:"Myrrh", latin:"Commiphora myrrha", slug:"myrrh-oil", price:"$98.67", sku:"30160001", size:"15 mL", family:"Resinous",
+    desc:"Smoky, warm, and grounding with deep historical roots.",
+    uses:"Used to support healthy-looking skin and promote feelings of grounded calm.",
+    application:"Add to a moisturizer, diffuse for a grounding atmosphere, or apply diluted to skin.",
+    tags:["skin","sleep"]},
+  {name:"Oregano", latin:"Origanum vulgare", slug:"oregano-oil", price:"$37.33", sku:"30180001", size:"15 mL", family:"Herbaceous", topSeller:true,
+    desc:"Potent and spicy — a powerhouse oil best used sparingly.",
+    uses:"Traditionally used to support immune function, especially during seasonal transitions.",
+    application:"Take internally in a veggie capsule per label guidance, or diffuse in small amounts; always dilute heavily for skin use.",
+    tags:["immune"]},
+  {name:"Patchouli", latin:"Pogostemon cablin", slug:"patchouli-oil", price:"$44.00", sku:"30890001", size:"15 mL", family:"Earthy",
+    desc:"Rich, musky, and grounding — popular in skincare and meditation blends.",
+    uses:"Used to support healthy-looking skin and promote a grounded, calm emotional state.",
+    application:"Add to a moisturizer, diffuse for grounding, or apply diluted to pulse points.",
+    tags:["skin","sleep"]},
+  {name:"Peppermint", latin:"Mentha piperita", slug:"peppermint-oil", price:"$34.67", sku:"30190001", size:"15 mL", family:"Minty", topSeller:true,
+    desc:"Cool, sharp, and energizing — a go-to for alertness and digestion.",
+    uses:"Commonly used to support mental alertness, ease occasional headaches when applied to temples, and soothe digestive discomfort.",
+    application:"Diffuse for a quick energy lift, rub diluted onto temples and neck, or take internally per label guidance.",
+    tags:["energy","digestion","headache"]},
+  {name:"Petitgrain", latin:"Citrus aurantium", slug:"petitgrain-oil", price:"$36.00", sku:"49520001", size:"15 mL", family:"Floral",
+    desc:"Green, woody-floral with a soft citrus undertone.",
+    uses:"Used to ease occasional stress and support a settled, relaxed mood.",
+    application:"Diffuse in the evening, or apply diluted to pulse points.",
+    tags:["sleep","mood"]},
+  {name:"Pink Pepper", latin:"Schinus molle", slug:"pink-pepper-oil", price:"$30.67", sku:"60207016", size:"5 mL", family:"Spicy",
+    desc:"Bright, fruity-spicy aroma with a lively, energizing character.",
+    uses:"Used to energize a room and add a lively top note to diffuser blends.",
+    application:"Diffuse blended with citrus oils for an uplifting aroma.",
+    tags:["energy","mood"]},
+  {name:"Roman Chamomile", latin:"Anthemis nobilis", slug:"roman-chamomile-oil", price:"$69.33", sku:"30800001", size:"5 mL", family:"Floral",
+    desc:"Soft, apple-like, and calming — gentle enough for sensitive moments.",
+    uses:"Used to soothe occasional stress, support restful sleep, and calm irritated skin.",
+    application:"Diffuse before bed, apply diluted to skin, or add to a warm bath.",
+    tags:["sleep","skin"]},
+  {name:"Rose", latin:"Rosa damascena", slug:"rose-oil", price:"$366.67", sku:"31000001", size:"5 mL", family:"Floral",
+    desc:"Luxurious, rich floral aroma — one of the most precious oils in the world.",
+    uses:"Used to uplift mood, promote a sense of self-care, and support healthy-looking skin.",
+    application:"Apply diluted to pulse points as a natural perfume, or add a drop to a facial serum.",
+    tags:["mood","skin"]},
+  {name:"Rosemary", latin:"Rosmarinus officinalis", slug:"rosemary-oil", price:"$29.33", sku:"30200001", size:"15 mL", family:"Herbaceous",
+    desc:"Sharp, herbaceous, and clarifying — long associated with memory and focus.",
+    uses:"Used to support mental clarity and focus, and to invigorate the scalp and hair.",
+    application:"Diffuse while studying or working, apply diluted to scalp, or add to shampoo.",
+    tags:["energy"]},
+  {name:"Sandalwood", latin:"Santalum album", slug:"sandalwood-oil", price:"$120.00", sku:"30210001", size:"5 mL", family:"Woody",
+    desc:"Creamy, soft, and woody — a meditative oil with skincare benefits.",
+    uses:"Used to support relaxation, meditation, and healthy-looking, hydrated skin.",
+    application:"Diffuse during meditation, add to a facial oil blend, or apply diluted to wrists.",
+    tags:["sleep","skin"]},
+  {name:"Siberian Fir", latin:"Abies sibirica", slug:"siberian-fir-oil", price:"$28.00", sku:"60203125", size:"15 mL", family:"Woody",
+    desc:"Fresh, green, and forest-like with a calming presence.",
+    uses:"Used to support clear breathing and create a calming, grounded atmosphere.",
+    application:"Diffuse for a forest ambiance, or apply diluted to chest and back.",
+    tags:["breathing","sleep"]},
+  {name:"Spanish Sage", latin:"Salvia lavandulifolia", slug:"spanish-sage-oil", price:"$38.67", sku:"60222270", size:"15 mL", family:"Herbaceous",
+    desc:"Soft, herbaceous sage aroma, gentler than common sage.",
+    uses:"Used to support a calm, clear mind and as a soothing addition to skincare.",
+    application:"Diffuse for mental clarity, or apply diluted to skin.",
+    tags:["energy","skin"]},
+  {name:"Spearmint", latin:"Mentha spicata", slug:"spearmint-oil", price:"$41.33", sku:"31610001", size:"15 mL", family:"Minty",
+    desc:"Sweet and cooling — a gentler cousin to peppermint.",
+    uses:"Used to support digestive comfort and freshen breath, and to invigorate mood.",
+    application:"Diffuse for a fresh atmosphere, add to homemade toothpaste, or apply diluted to the stomach.",
+    tags:["digestion","mood","nausea"]},
+  {name:"Spikenard", latin:"Nardostachys jatamansi", slug:"spikenard-oil", price:"$72.00", sku:"49510001", size:"5 mL", family:"Earthy",
+    desc:"Deep, musky, and grounding with an ancient, meditative character.",
+    uses:"Used to support deep relaxation and a calm, grounded emotional state.",
+    application:"Diffuse during meditation, or apply diluted to the bottoms of the feet before bed.",
+    tags:["sleep"]},
+  {name:"Tangerine", latin:"Citrus reticulata", slug:"tangerine-oil", price:"$21.33", sku:"49440001", size:"15 mL", family:"Citrus",
+    desc:"Sweet, juicy citrus aroma — bright and universally loved.",
+    uses:"Used to uplift mood and energize a space, especially when blended with other citrus oils.",
+    application:"Diffuse in the morning, or add to a homemade citrus room spray.",
+    tags:["mood","energy"]},
+  {name:"Tea Tree (Melaleuca)", latin:"Melaleuca alternifolia", slug:"tea-tree-oil", price:"$34.67", sku:"60208340", size:"15 mL", family:"Herbaceous",
+    desc:"A sharp, medicinal-smelling oil prized for skin and cleansing support.",
+    uses:"Frequently applied to support clear, healthy-looking skin, and used in natural cleaning blends for its purifying properties.",
+    application:"Apply diluted directly to blemishes, add to shampoo, or diffuse to purify the air.",
+    tags:["skin","cleaning"]},
+  {name:"Thyme", latin:"Thymus zygis and vulgaris", slug:"thyme-oil", price:"$45.33", sku:"60222622", size:"15 mL", family:"Herbaceous",
+    desc:"Sharp and medicinal — a traditional immune and respiratory support oil.",
+    uses:"Used to support respiratory comfort and immune health during seasonal changes.",
+    application:"Diffuse during cold season, or apply heavily diluted to the chest.",
+    tags:["immune","breathing"]},
+  {name:"Tulsi (Holy Basil)", latin:"Ocimum sanctum", slug:"tulsi-oil", price:"$41.33", sku:"60213450", size:"5 mL", family:"Herbaceous",
+    desc:"Peppery and clove-like, traditionally used in Ayurvedic practice.",
+    uses:"Used to support a calm, balanced mood and overall sense of well-being.",
+    application:"Diffuse during meditation, or apply diluted to pulse points.",
+    tags:["sleep","mood"]},
+  {name:"Turmeric", latin:"Curcuma longa", slug:"turmeric-oil", price:"$46.67", sku:"60206973", size:"15 mL", family:"Earthy",
+    desc:"Warm, earthy, and slightly bitter — the aromatic side of the popular spice.",
+    uses:"Used to support healthy-looking skin and overall wellness when taken internally per label guidance.",
+    application:"Apply diluted to skin, or take in a veggie capsule per label directions.",
+    tags:["skin"]},
+  {name:"Vetiver", latin:"Vetiveria zizanioides", slug:"vetiver-oil", price:"$88.00", sku:"30430001", size:"15 mL", family:"Earthy",
+    desc:"Deep, earthy, and grounding — often used to support restful sleep.",
+    uses:"Used to support deep relaxation and restful sleep, and to calm a busy mind.",
+    application:"Apply diluted to the bottoms of feet before bed, or diffuse in the evening.",
+    tags:["sleep"]},
+  {name:"Wild Orange", latin:"Citrus sinensis", slug:"wild-orange-oil", price:"$17.33", sku:"30170001", size:"15 mL", family:"Citrus", topSeller:true,
+    desc:"Sweet, juicy, and energizing — one of doTERRA's most popular oils.",
+    uses:"Used to uplift mood, energize a room, and support immune health as part of a healthy lifestyle.",
+    application:"Diffuse in the morning, add a drop to water, or use in homemade citrus cleaners.",
+    tags:["mood","energy","immune","cleaning"]},
+  {name:"Wintergreen", latin:"Gaultheria fragrantissima", slug:"wintergreen-oil", price:"$37.33", sku:"31620001", size:"15 mL", family:"Minty",
+    desc:"Sharp and minty with a strong cooling sensation, similar to menthol.",
+    uses:"Frequently used in massage to soothe muscle and joint discomfort after activity.",
+    application:"Apply diluted to sore muscles and joints; avoid use with certain medications — check label.",
+    tags:["muscle"]},
+  {name:"Ylang Ylang", latin:"Cananga odorata", slug:"ylang-ylang-oil", price:"$58.67", sku:"30240001", size:"15 mL", family:"Floral",
+    desc:"Rich, exotic, and floral — used to promote relaxation and a positive mood.",
+    uses:"Used to support relaxation, ease occasional tension, and uplift mood; also popular in hair care.",
+    application:"Diffuse in the evening, apply diluted to wrists, or add to conditioner.",
+    tags:["sleep","mood"]},
+];
+
+/* -------------------------------------------------------------------------
+   PROPRIETARY BLENDS
+------------------------------------------------------------------------- */
+const blendOils = [
+  {name:"abōde Refreshing Blend", latin:"Proprietary blend", slug:"abode-refreshing-blend-oil", price:"$34.67", sku:"60217576", size:"15 mL", family:"Blend",
+    desc:"A fresh, citrus-forward blend made for the home.",
+    uses:"Used to freshen the air and create an inviting, clean-smelling space throughout the home.",
+    application:"Diffuse throughout the day, or add to homemade cleaning products.",
+    tags:["cleaning","mood"]},
+  {name:"Adaptiv Calming Blend", latin:"Proprietary blend", slug:"adaptiv-oil", price:"$58.67", sku:"60209364", size:"15 mL", family:"Blend",
+    desc:"A calming citrus and herbaceous blend designed to ease everyday stress.",
+    uses:"Used to support emotional resilience and a sense of calm during stressful moments.",
+    application:"Diffuse during a busy day, or apply diluted to pulse points.",
+    tags:["sleep","mood"]},
+  {name:"Air-X Air Blend", latin:"Proprietary blend", slug:"air-x-oil", price:"$45.33", sku:"60215527", size:"15 mL", family:"Blend",
+    desc:"A respiratory-support blend combining camphoraceous and minty oils.",
+    uses:"Used to support clear, easy breathing, especially during seasonal months.",
+    application:"Diffuse at the first sign of seasonal discomfort, or apply diluted to the chest.",
+    tags:["breathing"]},
+  {name:"AromaTouch Massage Blend", latin:"Proprietary blend", slug:"aromatouch-oil", price:"$46.67", sku:"31200001", size:"15 mL", family:"Blend",
+    desc:"A warm, grounding blend designed specifically for massage.",
+    uses:"Used during massage to soothe muscle tension and promote a relaxed state.",
+    application:"Mix with a carrier oil and apply during massage, focusing on tense areas.",
+    tags:["muscle","sleep"]},
+  {name:"doTERRA Balance Grounding Blend", latin:"Proprietary blend", slug:"balance-oil", price:"$34.67", sku:"31010001", size:"15 mL", family:"Blend",
+    desc:"An earthy, woody blend designed to promote feelings of calm and stability.",
+    uses:"Used to ground emotions and ease feelings of overwhelm or anxiousness.",
+    application:"Apply diluted to the bottoms of the feet each morning, or diffuse during stressful moments.",
+    tags:["sleep","mood"]},
+  {name:"Brave Courage Blend", latin:"Proprietary blend", slug:"brave-oil", price:"$30.67", sku:"60206618", size:"10 mL roll-on", family:"Blend",
+    desc:"A warm, spicy blend designed to inspire courage and confidence.",
+    uses:"Used to support feelings of bravery and confidence before a challenging moment.",
+    application:"Apply to pulse points before a big presentation, interview, or new experience.",
+    tags:["mood","energy"]},
+  {name:"doTERRA Breathe Respiratory Blend", latin:"Proprietary blend", slug:"breathe-oil", price:"$38.67", sku:"60200190", size:"15 mL", family:"Blend",
+    desc:"A blend of respiratory-supportive oils designed for easy breathing.",
+    uses:"Used to promote feelings of clear airways, especially during seasonal months or sleep.",
+    application:"Diffuse at bedtime, or apply diluted to the chest and back.",
+    tags:["breathing","sleep"]},
+  {name:"Citrus Bliss Invigorating Blend", latin:"Proprietary blend", slug:"citrus-bliss-oil", price:"$33.33", sku:"60219370", size:"15 mL", family:"Blend",
+    desc:"A bright blend of citrus oils designed to invigorate and uplift.",
+    uses:"Used to energize a room and uplift mood throughout the day.",
+    application:"Diffuse in the morning, or add to a homemade body scrub.",
+    tags:["mood","energy"]},
+  {name:"ClaryCalm Monthly Blend for Women", latin:"Proprietary blend", slug:"clarycalm-oil", price:"$48.00", sku:"49480001", size:"10 mL roll-on", family:"Blend",
+    desc:"A blend formulated specifically to support women through monthly cycles.",
+    uses:"Used to ease occasional discomfort and support emotional balance during the menstrual cycle.",
+    application:"Apply to the abdomen and lower back as needed throughout the month.",
+    tags:["hormonal"]},
+  {name:"doTERRA Console Comforting Blend", latin:"Proprietary blend", slug:"console-oil", price:"$57.33", sku:"31730001", size:"5 mL", family:"Blend",
+    desc:"A floral, comforting blend designed to ease grief and emotional pain.",
+    uses:"Used to support emotional comfort during times of grief, sadness, or transition.",
+    application:"Diffuse during a difficult moment, or apply diluted over the heart.",
+    tags:["mood"]},
+  {name:"Deep Blue Soothing Blend", latin:"Proprietary blend", slug:"deep-blue-oil", price:"$50.67", sku:"60200143", size:"5 mL", family:"Blend",
+    desc:"A cooling blend of muscle-soothing oils, including Wintergreen and Camphor.",
+    uses:"Used after exercise or activity to soothe sore muscles and joints.",
+    application:"Apply diluted directly to sore muscles, or use the Deep Blue Rub for convenience.",
+    tags:["muscle"]},
+  {name:"DigestZen Digestive Blend", latin:"Proprietary blend", slug:"digestzen-oil", price:"$50.67", sku:"60214361", size:"15 mL", family:"Blend",
+    desc:"A blend of digestive-supportive oils including Ginger, Peppermint, and Fennel.",
+    uses:"Used to ease occasional stomach upset, bloating, and digestive discomfort.",
+    application:"Apply diluted to the stomach, or take in a veggie capsule per label guidance.",
+    tags:["digestion","nausea"]},
+  {name:"doTERRA Forgive Renewing Blend", latin:"Proprietary blend", slug:"forgive-oil", price:"$33.33", sku:"31750001", size:"5 mL", family:"Blend",
+    desc:"A blend designed to release negative emotions and promote renewal.",
+    uses:"Used to support emotional release and a fresh, renewed outlook.",
+    application:"Diffuse during meditation or journaling, or apply diluted over the heart.",
+    tags:["mood"]},
+  {name:"HD Clear Topical Blend", latin:"Proprietary blend", slug:"hd-clear-oil", price:"$32.00", sku:"49400001", size:"10 mL roll-on", family:"Blend",
+    desc:"A blend formulated to support clear, healthy-looking skin.",
+    uses:"Used to target blemishes and support an overall clear complexion.",
+    application:"Apply directly to blemishes as part of a daily skincare routine.",
+    tags:["skin"]},
+  {name:"Immortelle Anti-Aging Blend", latin:"Proprietary blend", slug:"immortelle-oil", price:"$109.33", sku:"60220469", size:"10 mL roll-on", family:"Blend",
+    desc:"A luxurious facial blend featuring Frankincense, Helichrysum, and Rose.",
+    uses:"Used to support youthful, healthy-looking skin as part of a daily routine.",
+    application:"Apply to clean skin morning and night, focusing on fine lines.",
+    tags:["skin"]},
+  {name:"InTune Focus Blend", latin:"Proprietary blend", slug:"intune-oil", price:"$56.00", sku:"60220468", size:"10 mL roll-on", family:"Blend",
+    desc:"A grounding blend designed to support focus and mental clarity.",
+    uses:"Used to support sustained focus during work, study, or creative tasks.",
+    application:"Apply to wrists or temples before a task requiring concentration.",
+    tags:["energy"]},
+  {name:"MetaPWR Metabolic Blend", latin:"Proprietary blend", slug:"metapwr-oil", price:"$40.00", sku:"60217575", size:"15 mL", family:"Blend",
+    desc:"A citrus and spice blend formulated to support healthy metabolic function.",
+    uses:"Used as part of a healthy lifestyle to support metabolism and curb occasional cravings.",
+    application:"Take in water per label guidance, or apply diluted to the stomach before meals.",
+    tags:["digestion"]},
+  {name:"doTERRA Motivate Encouraging Blend", latin:"Proprietary blend", slug:"motivate-oil", price:"$32.00", sku:"60218764", size:"5 mL", family:"Blend",
+    desc:"An energizing blend designed to inspire motivation and positive action.",
+    uses:"Used to spark motivation and confidence before tackling a challenging task.",
+    application:"Diffuse while working, or apply to pulse points before a big task.",
+    tags:["energy","mood"]},
+  {name:"Northern Escape Woodland Blend", latin:"Proprietary blend", slug:"northern-escape-oil", price:"$43.33", sku:"60221667", size:"15 mL", family:"Blend",
+    desc:"A woodsy, evergreen blend evoking a walk through a northern forest.",
+    uses:"Used to ground emotions and create a calming, forest-like atmosphere.",
+    application:"Diffuse for a calming woodland aroma, especially during colder months.",
+    tags:["sleep"]},
+  {name:"doTERRA On Guard Protective Blend", latin:"Proprietary blend", slug:"on-guard-oil", price:"$52.00", sku:"31100001", size:"15 mL", family:"Blend", topSeller:true,
+    desc:"A spicy, warming blend of Wild Orange, Clove, Cinnamon, and other immune-supportive oils.",
+    uses:"Used to support healthy immune function, especially during seasonal transitions.",
+    application:"Diffuse during cold season, apply diluted to the bottoms of feet, or use the toothpaste and mouth rinse for oral care.",
+    tags:["immune","cleaning"]},
+  {name:"doTERRA Passion Inspiring Blend", latin:"Proprietary blend", slug:"passion-oil", price:"$57.33", sku:"60218767", size:"5 mL", family:"Blend",
+    desc:"A warm, spicy blend designed to inspire passion and enthusiasm.",
+    uses:"Used to spark excitement, creativity, and enthusiasm for daily activities.",
+    application:"Diffuse while working on a passion project, or apply to pulse points.",
+    tags:["energy","mood"]},
+  {name:"PastTense Tension Blend", latin:"Proprietary blend", slug:"pasttense-oil", price:"$46.67", sku:"60215812", size:"15 mL", family:"Blend",
+    desc:"A cooling blend designed to ease occasional tension headaches.",
+    uses:"Used to soothe tension in the head, neck, and shoulders.",
+    application:"Apply diluted to temples, neck, and shoulders as needed.",
+    tags:["headache"]},
+  {name:"doTERRA Peace Reassuring Blend", latin:"Proprietary blend", slug:"peace-oil", price:"$46.67", sku:"31710001", size:"5 mL", family:"Blend",
+    desc:"A grounding floral blend designed to promote a calm, reassured state.",
+    uses:"Used to ease feelings of anxiousness and promote a settled, peaceful mood.",
+    application:"Apply to the back of the neck or wrists during stressful moments.",
+    tags:["sleep","mood"]},
+  {name:"Purify Cleansing Blend", latin:"Proprietary blend", slug:"purify-oil", price:"$34.67", sku:"31060001", size:"15 mL", family:"Blend",
+    desc:"A fresh, citrus-and-pine blend designed to purify the air.",
+    uses:"Used to neutralize unwanted odors and freshen the air throughout the home.",
+    application:"Diffuse to purify a room, or add to a homemade air freshener spray.",
+    tags:["cleaning"]},
+  {name:"RevitaZen Detoxification Blend", latin:"Proprietary blend", slug:"revitazen-oil", price:"$38.67", sku:"60231405", size:"15 mL", family:"Blend", isNew:true,
+    desc:"A fresh, herbaceous blend designed to support the body's natural detoxification.",
+    uses:"Used as part of a healthy lifestyle to support the body's natural cleansing processes.",
+    application:"Apply diluted to the stomach or take internally per label guidance.",
+    tags:["digestion"]},
+  {name:"doTERRA Serenity Restful Blend", latin:"Proprietary blend", slug:"serenity-oil", price:"$56.00", sku:"60217983", size:"15 mL", family:"Blend",
+    desc:"A calming blend of Lavender, Cedarwood, and other relaxing oils.",
+    uses:"Used to support restful sleep and ease the mind before bedtime.",
+    application:"Diffuse in the bedroom each night, or apply diluted to the bottoms of the feet.",
+    tags:["sleep"]},
+  {name:"Shinrin-Yoku Forest Bathing Blend", latin:"Proprietary blend", slug:"shinrin-yoku-oil", price:"$45.33", sku:"60225771", size:"15 mL", family:"Blend",
+    desc:"A blend inspired by the Japanese practice of forest bathing.",
+    uses:"Used to promote relaxation and a sense of connection to nature.",
+    application:"Diffuse during meditation or quiet time, or apply diluted to the wrists.",
+    tags:["sleep"]},
+  {name:"Steady Grounding Blend", latin:"Proprietary blend", slug:"steady-oil", price:"$24.00", sku:"60206617", size:"10 mL roll-on", family:"Blend",
+    desc:"An earthy, grounding roll-on blend for steadying the mind.",
+    uses:"Used to promote feelings of stability and calm during uncertain moments.",
+    application:"Apply to the bottoms of the feet or wrists as needed.",
+    tags:["sleep","mood"]},
+  {name:"doTERRA SuperMint Mentha Blend", latin:"Proprietary blend", slug:"supermint-oil", price:"$42.67", sku:"60221859", size:"15 mL", family:"Blend",
+    desc:"A blend of cooling mint oils designed for an extra-strong minty effect.",
+    uses:"Used to support alertness and freshen breath with an intense, cooling sensation.",
+    application:"Diffuse for an energizing boost, or use in the SuperMint toothpaste for oral care.",
+    tags:["energy"]},
+  {name:"TerraShield Repellent Blend", latin:"Proprietary blend", slug:"terrashield-oil", price:"$20.00", sku:"60214386", size:"15 mL", family:"Blend",
+    desc:"A blend of oils traditionally used outdoors in warm weather.",
+    uses:"Used outdoors for its pleasant aroma during warm-weather activities.",
+    application:"Apply diluted to skin and clothing before outdoor activities, or use the spray version for convenience.",
+    tags:["outdoors"]},
+];
+
+const allOils = [...singleOils, ...blendOils];
+
+/* -------------------------------------------------------------------------
+   SYMPTOM WHEEL DATA
+------------------------------------------------------------------------- */
+const symptomMap = [
+  {key:"sleep", label:"Trouble Sleeping", color:"#3f4d37", oilNames:["Lavender","Vetiver","Roman Chamomile","doTERRA Serenity Restful Blend"]},
+  {key:"mood", label:"Low Mood", color:"#c97b4a", oilNames:["Wild Orange","Grapefruit","Bergamot","Citrus Bliss Invigorating Blend"]},
+  {key:"headache", label:"Headache", color:"#b5562f", oilNames:["Peppermint","Basil","Lavender","PastTense Tension Blend"]},
+  {key:"digestion", label:"Upset Stomach", color:"#b08d3e", oilNames:["Ginger","Peppermint","Fennel (Sweet)","DigestZen Digestive Blend"]},
+  {key:"energy", label:"Low Energy / Focus", color:"#8a9a6e", oilNames:["Peppermint","Wild Orange","Rosemary","InTune Focus Blend"]},
+  {key:"muscle", label:"Sore Muscles", color:"#7a4b32", oilNames:["Wintergreen","Marjoram","Cypress","Deep Blue Soothing Blend"]},
+  {key:"skin", label:"Skin Irritation", color:"#9c8255", oilNames:["Tea Tree (Melaleuca)","Helichrysum","Lavender","HD Clear Topical Blend"]},
+  {key:"breathing", label:"Congestion / Breathing", color:"#4f6b5e", oilNames:["Eucalyptus","Douglas Fir","Cardamom","doTERRA Breathe Respiratory Blend"]},
+  {key:"immune", label:"Seasonal / Immune", color:"#6b4f4f", oilNames:["Oregano","Cinnamon Bark","Clove","doTERRA On Guard Protective Blend"]},
+  {key:"hormonal", label:"Hormonal / Cycle", color:"#8b5e6b", oilNames:["Clary Sage","Geranium","Lavender","ClaryCalm Monthly Blend for Women"]},
+  {key:"nausea", label:"Nausea", color:"#a87c3e", oilNames:["Ginger","Peppermint","Spearmint","DigestZen Digestive Blend"]},
+  {key:"cleaning", label:"Need to Clean / Freshen", color:"#5a7a6b", oilNames:["Lemon","Tea Tree (Melaleuca)","Purify Cleansing Blend","abōde Refreshing Blend"]},
+];
+
+/* -------------------------------------------------------------------------
+   OIL USES INDEX — general, non-doTERRA-specific household & lifestyle uses
+   Organized into alphabetized categories.
+------------------------------------------------------------------------- */
+const usesIndex = [
+  {
+    category:"Candles & Wax Melts",
+    icon:"🕯️",
+    blurb:"Adding essential oils to homemade candles and wax melts for natural fragrance.",
+    items:[
+      {title:"Scenting soy wax melts", body:"Add essential oil at roughly 6–10% of the total wax weight once the wax has cooled slightly below pouring temperature (around 180°F/82°C) — adding it too hot causes the scent to evaporate before the wax sets.", oils:["Lavender","Wild Orange","Cedarwood","Bergamot"]},
+      {title:"Refreshing a candle that's lost its scent", body:"Add a drop or two of oil to the melted wax pool around the wick before relighting, away from the open flame, to revive a candle that's stopped throwing scent.", oils:["Lemon","Ylang Ylang","Vetiver"]},
+      {title:"Layering scents for a custom blend", body:"Combine a citrus top note, a floral or herbaceous middle note, and a woody base note for a rounded, complex candle fragrance rather than a single flat scent.", oils:["Bergamot","Geranium","Sandalwood"]},
+      {title:"Choosing oils that hold up to heat", body:"Citrus oils evaporate faster than woody or resinous oils when heated, so blends meant to throw scent for hours often lean more heavily on the heavier, longer-lasting notes.", oils:["Patchouli","Frankincense","Myrrh"]},
+    ]
+  },
+  {
+    category:"Cleaning & Household",
+    icon:"🧽",
+    blurb:"Using essential oils as natural additions to homemade cleaning products.",
+    items:[
+      {title:"All-purpose surface spray", body:"Combine water, white vinegar, and a handful of drops of a purifying oil in a glass spray bottle for a simple, fresh-smelling surface cleaner. Avoid plastic bottles, as citrus oils can break down certain plastics over time.", oils:["Lemon","Tea Tree (Melaleuca)","Lime"]},
+      {title:"Natural dish soap boost", body:"Add a couple of drops to a refillable dish soap dispenser for a fresh scent and a satisfying citrus cut-through on greasy dishes.", oils:["Lemon","Grapefruit","Green Mandarin"]},
+      {title:"Garbage disposal refresher", body:"Drop a few citrus oil drops onto ice cubes and run them through the disposal to clean blades and neutralize odors.", oils:["Lemon","Lime","Wild Orange"]},
+      {title:"Carpet and fabric freshening powder", body:"Mix essential oil into baking soda, let it sit in a sealed jar for a day so the scent disperses evenly, then sprinkle onto carpets before vacuuming.", oils:["Lavender","Tea Tree (Melaleuca)","Cedarwood"]},
+      {title:"Trash can and bin deodorizing", body:"Place a few drops on a cotton ball and tuck it in the bottom of a trash can liner, or add a couple of drops directly to the bin between bags.", oils:["Tea Tree (Melaleuca)","Lemongrass"]},
+      {title:"Mold-prone area maintenance", body:"Add to a vinegar-water spray for bathroom tile, shower grout, and other damp areas prone to mildew, thanks to its naturally purifying aroma.", oils:["Tea Tree (Melaleuca)","Clove"]},
+      {title:"Glass and mirror cleaner", body:"A drop or two in a vinegar-and-water glass cleaner cuts streaks and leaves a clean scent without the sharp smell of straight vinegar.", oils:["Lemon","Grapefruit"]},
+    ]
+  },
+  {
+    category:"Cooking & Kitchen",
+    icon:"🍳",
+    blurb:"Adding food-safe essential oils to recipes — always confirm an oil is labeled safe for internal/culinary use before consuming.",
+    items:[
+      {title:"Flavoring baked goods", body:"A single drop goes a long way in cookies, cakes, or frosting — start with a toothpick dip rather than a full drop, since essential oils are far more concentrated than extracts.", oils:["Madagascar Vanilla","Lemon","Peppermint"]},
+      {title:"Savory dish finishing", body:"A drop stirred into sauces, soups, or marinades near the end of cooking adds a bright, herbaceous note without the bulk of fresh herbs.", oils:["Basil","Black Pepper","Cilantro"]},
+      {title:"Infused simple syrups", body:"Add a drop to a cooled simple syrup for cocktails, lemonades, or coffee drinks — citrus and mint oils work especially well here.", oils:["Lime","Spearmint","Wild Orange"]},
+      {title:"Homemade salad dressings", body:"A drop of a citrus or herbaceous oil whisked into olive oil and vinegar adds brightness without needing fresh zest or herbs on hand.", oils:["Lemon","Cilantro","Basil"]},
+    ]
+  },
+  {
+    category:"Fabric & Linen Scenting",
+    icon:"👕",
+    blurb:"Adding fragrance to laundry, linens, and closets without synthetic fragrance additives.",
+    items:[
+      {title:"DIY laundry freshener", body:"Add a few drops to a damp wool dryer ball before tossing it in with a load — this scents the fabric gently without staining, unlike adding oil directly to clothing.", oils:["Lavender","Wild Orange","Lemongrass"]},
+      {title:"Linen spray for sheets and pillows", body:"Combine distilled water, a splash of witch hazel (as an emulsifier), and several drops of oil in a fine-mist spray bottle for a light linen spray.", oils:["Lavender","Bergamot","Roman Chamomile"]},
+      {title:"Closet and drawer sachets", body:"Add a few drops to a cotton pouch or wool dryer ball and tuck it into a drawer or closet corner to keep clothing smelling fresh between washes.", oils:["Cedarwood","Patchouli","Clary Sage"]},
+      {title:"Gym bag and shoe deodorizing", body:"A few drops on a cotton ball left inside a gym bag or shoe overnight helps neutralize odor-causing bacteria.", oils:["Tea Tree (Melaleuca)","Eucalyptus"]},
+    ]
+  },
+  {
+    category:"Gardening & Outdoors",
+    icon:"🌳",
+    blurb:"Using essential oils for outdoor and garden-adjacent purposes.",
+    items:[
+      {title:"Patio and porch ambiance", body:"A few drops on unglazed terracotta discs placed around a porch or patio offer a pleasant aroma during outdoor gatherings.", oils:["Citronella","Lemongrass","Lemon Eucalyptus"]},
+      {title:"Pre-outing skin application", body:"Diluted in a carrier oil and applied to skin and clothing before spending time outdoors in warm weather, often layered with a barrier product for added coverage.", oils:["Citronella","TerraShield Repellent Blend","Lemon Eucalyptus"]},
+      {title:"Composting odor control", body:"A few drops added to a compost bin can help offset strong odors between turning the pile.", oils:["Lemon","Tea Tree (Melaleuca)"]},
+    ]
+  },
+  {
+    category:"Hair & Scalp Care",
+    icon:"💇",
+    blurb:"Adding oils to hair-care routines for scalp and shine support.",
+    items:[
+      {title:"Scalp massage oil", body:"A few drops diluted in a carrier oil like fractionated coconut oil, massaged into the scalp before shampooing, can feel invigorating and help distribute natural oils.", oils:["Rosemary","Cedarwood","Peppermint"]},
+      {title:"Shampoo and conditioner boost", body:"Add a couple of drops directly to a single use of shampoo or conditioner in your palm before applying, rather than the whole bottle, to keep the scent fresh longer.", oils:["Rosemary","Lavender","Ylang Ylang"]},
+      {title:"Dry scalp relief", body:"Diluted application to the scalp between washes may help soothe a dry, itchy scalp.", oils:["Tea Tree (Melaleuca)","Lavender"]},
+    ]
+  },
+  {
+    category:"Health & Wellness",
+    icon:"🩺",
+    blurb:"General wellness applications. These are informational, not medical advice — always dilute oils for topical use and consult a healthcare provider for ongoing or serious symptoms.",
+    items:[
+      {title:"Easing occasional headaches", body:"Diluted application to the temples, forehead, and back of the neck is a common approach for occasional tension headaches.", oils:["Peppermint","Lavender","Basil"]},
+      {title:"Supporting restful sleep", body:"Diffusing in the bedroom 30 minutes before bed, or applying diluted oil to the bottoms of the feet, is a popular wind-down routine.", oils:["Lavender","Vetiver","Roman Chamomile"]},
+      {title:"Soothing sore or tired muscles", body:"Diluted in a carrier oil for massage after exercise, or added to an Epsom salt bath, to ease muscle tightness.", oils:["Wintergreen","Marjoram","Eucalyptus"]},
+      {title:"Settling an upset stomach", body:"Diluted application in a clockwise motion over the stomach, or inhaling directly from the bottle, is a common approach for occasional digestive discomfort or motion sickness.", oils:["Ginger","Peppermint","Fennel (Sweet)"]},
+      {title:"Supporting clear breathing", body:"Diffusing or applying diluted oil to the chest is a common approach during seasonal months when easy breathing feels harder to come by.", oils:["Eucalyptus","Douglas Fir","Cardamom"]},
+      {title:"Calming stress and anxious feelings", body:"Inhaling directly from the bottle or a diffuser, or applying diluted oil to pulse points, is a widely used grounding technique during stressful moments.", oils:["Lavender","Bergamot","Frankincense"]},
+      {title:"Supporting seasonal immune health", body:"Diffusing or diluted topical application, especially on the bottoms of the feet, is a traditional approach during cold and flu season.", oils:["Oregano","Clove","Cinnamon Bark"]},
+      {title:"Soothing minor skin irritation", body:"Diluted application directly to the area of concern is a common approach for occasional blemishes, dry patches, or minor irritation.", oils:["Tea Tree (Melaleuca)","Helichrysum","Lavender"]},
+    ]
+  },
+  {
+    category:"Massage & Bodywork",
+    icon:"💆",
+    blurb:"Blending oils for massage therapy and self-massage routines.",
+    items:[
+      {title:"Building a massage oil base", body:"Dilute essential oil into a neutral carrier oil — fractionated coconut, jojoba, or sweet almond oil are common choices — at roughly 2–3% concentration (about 12–18 drops per ounce of carrier) for general massage.", oils:["Marjoram","Cypress","AromaTouch Massage Blend"]},
+      {title:"Post-workout recovery rub", body:"A cooling blend applied to fatigued muscles after exercise is a popular post-workout ritual, often paired with stretching.", oils:["Wintergreen","Black Pepper","Deep Blue Soothing Blend"]},
+      {title:"Relaxing evening massage", body:"A slower, calming blend used for an evening massage can help signal the body to wind down before bed.", oils:["Lavender","Ylang Ylang","Roman Chamomile"]},
+    ]
+  },
+  {
+    category:"Mood & Mindfulness",
+    icon:"🧘",
+    blurb:"Using aroma to support mood, focus, and mindfulness practices.",
+    items:[
+      {title:"Morning energy ritual", body:"Diffusing an energizing citrus oil first thing in the morning is a simple way to set an alert, positive tone for the day.", oils:["Wild Orange","Grapefruit","Peppermint"]},
+      {title:"Focus while working or studying", body:"Diffusing a clarifying oil at a desk, or inhaling directly from the bottle before a task requiring concentration, is a common focus ritual.", oils:["Rosemary","Peppermint","InTune Focus Blend"]},
+      {title:"Meditation and breathwork support", body:"Diffusing a grounding, woody oil during meditation or breathwork can help anchor attention and deepen relaxation.", oils:["Frankincense","Sandalwood","Vetiver"]},
+      {title:"Journaling and emotional processing", body:"Diffusing or inhaling a comforting blend while journaling is a popular pairing for working through difficult emotions.", oils:["doTERRA Console Comforting Blend","Bergamot","Geranium"]},
+    ]
+  },
+  {
+    category:"Personal Fragrance & Skincare",
+    icon:"🧴",
+    blurb:"Using oils as natural alternatives to synthetic fragrance and in DIY skincare.",
+    items:[
+      {title:"Natural perfume rollerball", body:"Combine 10–15 drops of oil with a carrier oil in a 10 mL roller bottle for an easy, natural alternative to synthetic perfume.", oils:["Rose","Ylang Ylang","Bergamot"]},
+      {title:"DIY facial serum", body:"Add a drop or two of a skin-supportive oil to an unscented facial oil or moisturizer as part of a nightly routine.", oils:["Frankincense","Helichrysum","Geranium"]},
+      {title:"Bath soak", body:"Combine oil with a dispersing agent like Epsom salt or whole milk before adding to bathwater — undiluted oil floats on top and can irritate skin directly.", oils:["Lavender","Roman Chamomile","Ylang Ylang"]},
+      {title:"Natural deodorant boost", body:"A drop added to an unscented natural deodorant or DIY recipe adds fragrance along with a naturally purifying quality.", oils:["Tea Tree (Melaleuca)","doTERRA Balance Grounding Blend"]},
+    ]
+  },
+  {
+    category:"Travel",
+    icon:"✈️",
+    blurb:"Compact, practical uses for essential oils while away from home.",
+    items:[
+      {title:"Motion and travel sickness", body:"Inhaling directly from the bottle, or a diluted application behind the ears, is a common approach for queasiness during car, plane, or boat travel.", oils:["Ginger","Peppermint","Spearmint"]},
+      {title:"Hotel room freshening", body:"A few drops on a cotton ball tucked into a vent or corner of an unfamiliar hotel room can make the space feel more like home.", oils:["Lavender","Wild Orange"]},
+      {title:"Jet lag and sleep adjustment", body:"Diffusing or applying a calming oil to the feet can help signal bedtime when adjusting to a new time zone.", oils:["Lavender","Vetiver"]},
+      {title:"On-the-go immune support", body:"A travel-sized roller blend kept in a bag for use during flights or in shared spaces is a popular preventive habit.", oils:["doTERRA On Guard Protective Blend","Oregano"]},
+    ]
+  },
+];
+
+/* category list for nav, alphabetized */
+const usesCategoryOrder = usesIndex.map(c => c.category).sort();
+
+</script>
+<script>
+/* =========================================================================
+   THE DROP INDEX — APP LOGIC
+   ========================================================================= */
+
+(function(){
+  "use strict";
+
+  /* ===================== VIEW SWITCHING ===================== */
+  var viewScrollPositions = {};
+
+  function getActiveViewId(){
+    var active = document.querySelector('.view.active');
+    return active ? active.id : null;
+  }
+
+  function showView(id, opts){
+    opts = opts || {};
+    var previousId = getActiveViewId();
+    var changingViews = previousId !== id;
+
+    if(changingViews && previousId){
+      viewScrollPositions[previousId] = window.pageYOffset || document.documentElement.scrollTop || 0;
+    }
+
+    var target = document.getElementById(id);
+    if(!target){ console.error('View not found:', id); return; }
+
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    target.classList.add('active');
+    closeModal();
+    updateTabbar(id);
+
+    if(!opts.skipHash){
+      try{ history.replaceState(null, '', '#' + id); }catch(err){ /* file:// protocol may block this — safe to ignore */ }
+    }
+
+    if(changingViews && !opts.keepScroll){
+      var y = 0;
+      if(opts.restoreScroll && Object.prototype.hasOwnProperty.call(viewScrollPositions, id)){
+        y = viewScrollPositions[id];
+      }
+      if(opts.scrollTop === true){
+        y = 0;
+      }
+      requestAnimationFrame(function(){
+        window.scrollTo({top:y, behavior:'auto'});
+      });
+    }
+  }
+
+  function updateTabbar(viewId){
+    document.querySelectorAll('.tabbar-btn').forEach(function(btn){
+      btn.classList.toggle('active', btn.getAttribute('data-target') === viewId);
+    });
+  }
+
+  /* ===================== HOME LEAVES (decorative) ===================== */
+  function buildLeaves(){
+    var container = document.getElementById('leafContainer');
+    if(!container) return;
+    for(var i=0;i<10;i++){
+      var leaf = document.createElement('div');
+      leaf.className = 'leaf';
+      leaf.style.left = (Math.random()*100)+'%';
+      leaf.style.animationDelay = (Math.random()*14)+'s';
+      leaf.style.animationDuration = (10+Math.random()*8)+'s';
+      leaf.style.background = Math.random()>0.5 ? '#8a9a6e' : '#b08d3e';
+      container.appendChild(leaf);
+    }
+  }
+
+  /* ===================== LIBRARY ===================== */
+  var activeFilter = null;
+  var currentSort = 'az';
+
+  function findOilByName(name){
+    return allOils.find(function(o){ return o.name === name; });
+  }
+
+  function tagLabel(tag){
+    var found = symptomMap.find(function(s){ return s.key === tag; });
+    return found ? found.label : tag;
+  }
+
+  function getAllTagKeys(){
+    var set = {};
+    allOils.forEach(function(o){ (o.tags||[]).forEach(function(t){ set[t]=true; }); });
+    return Object.keys(set);
+  }
+
+  function renderChips(){
+    var chipBox = document.getElementById('filterChips');
+    if(!chipBox) return;
+    chipBox.innerHTML = '';
+
+    var allChip = document.createElement('button');
+    allChip.className = 'filter-chip' + (activeFilter===null ? ' active':'');
+    allChip.textContent = 'All Products';
+    allChip.setAttribute('data-filter', '__all__');
+    chipBox.appendChild(allChip);
+
+    var tagKeys = getAllTagKeys().sort(function(a,b){ return tagLabel(a).localeCompare(tagLabel(b)); });
+    tagKeys.forEach(function(tag){
+      var chip = document.createElement('button');
+      chip.className = 'filter-chip' + (activeFilter===tag ? ' active':'');
+      chip.textContent = tagLabel(tag);
+      chip.setAttribute('data-filter', tag);
+      chipBox.appendChild(chip);
+    });
+  }
+
+  function renderOils(){
+    var grid = document.getElementById('oilGrid');
+    var searchInput = document.getElementById('oilSearch');
+    if(!grid) return;
+    var query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+    grid.innerHTML = '';
+
+    var filtered = allOils.filter(function(o){
+      var matchesQuery = !query ||
+        o.name.toLowerCase().includes(query) ||
+        o.desc.toLowerCase().includes(query) ||
+        o.family.toLowerCase().includes(query) ||
+        (o.tags||[]).some(function(t){ return tagLabel(t).toLowerCase().includes(query); });
+      var matchesTag = !activeFilter || (o.tags||[]).includes(activeFilter);
+      return matchesQuery && matchesTag;
+    });
+
+    filtered.sort(function(a,b){
+      if(currentSort === 'az') return a.name.localeCompare(b.name);
+      if(currentSort === 'za') return b.name.localeCompare(a.name);
+      if(currentSort === 'price-low') return parsePrice(a.price) - parsePrice(b.price);
+      if(currentSort === 'price-high') return parsePrice(b.price) - parsePrice(a.price);
+      return 0;
+    });
+
+    if(filtered.length===0){
+      grid.innerHTML = '<p style="color:#8a8678; font-size:0.95rem; padding:2rem 0;">No products match that search — try another term.</p>';
+      return;
+    }
+
+    filtered.forEach(function(o){
+      var card = document.createElement('div');
+      card.className = 'oil-card';
+      card.setAttribute('data-open-oil', o.name);
+      var badges = '';
+      if(o.topSeller) badges += '<span class="badge-top">Top Seller</span>';
+      if(o.isNew) badges += '<span class="badge-new">New</span>';
+      card.innerHTML =
+        '<div class="oil-card-top">' +
+          '<div>' +
+            '<div class="oil-name">' + escapeHtml(o.name) + '</div>' +
+            '<div class="oil-latin">' + escapeHtml(o.latin) + '</div>' +
+          '</div>' +
+          '<span class="oil-tag">' + escapeHtml(o.family) + '</span>' +
+        '</div>' +
+        (badges ? '<div class="badge-row">' + badges + '</div>' : '') +
+        '<p class="oil-desc">' + escapeHtml(o.desc) + '</p>' +
+        '<div class="oil-price">' + escapeHtml(o.price) + ' · ' + escapeHtml(o.size) + '</div>' +
+        '<div class="oil-card-foot"><span>View full profile →</span></div>';
+      grid.appendChild(card);
+    });
+  }
+
+  function parsePrice(str){
+    return parseFloat(String(str).replace(/[^0-9.]/g,'')) || 0;
+  }
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+  }
+
+  /* ===================== OIL MODAL ===================== */
+  function openOilModal(name){
+    var oil = findOilByName(name);
+    if(!oil) return;
+    var box = document.getElementById('oilModalBox');
+    if(!box) return;
+
+    var tagPills = (oil.tags||[]).map(function(t){
+      return '<span class="pill" data-goto-symptom="' + t + '">' + escapeHtml(tagLabel(t)) + '</span>';
+    }).join('');
+
+    var productUrl = oil.slug ? (DOTERRA_BASE + oil.slug) : DOTERRA_SHOP_BASE;
+
+    box.innerHTML =
+      '<button class="modal-close" data-close-modal aria-label="Close">×</button>' +
+      '<h2>' + escapeHtml(oil.name) + '</h2>' +
+      '<div class="oil-latin">' + escapeHtml(oil.latin) + ' · ' + escapeHtml(oil.family) + ' family</div>' +
+      '<div class="modal-meta">' +
+        '<span><strong>' + escapeHtml(oil.price) + '</strong> retail</span>' +
+        '<span>' + escapeHtml(oil.size) + '</span>' +
+        (oil.sku ? '<span>SKU ' + escapeHtml(oil.sku) + '</span>' : '') +
+      '</div>' +
+      '<div class="modal-section"><h4>Overview</h4><p>' + escapeHtml(oil.desc) + '</p></div>' +
+      '<div class="modal-section"><h4>Suggested Uses</h4><p>' + escapeHtml(oil.uses) + '</p></div>' +
+      '<div class="modal-section"><h4>How It\'s Typically Applied</h4><p>' + escapeHtml(oil.application) + '</p></div>' +
+      (tagPills ? '<div class="modal-section"><h4>Associated With</h4><div class="pill-row">' + tagPills + '</div></div>' : '') +
+      '<a class="modal-buy" href="' + productUrl + '" target="_blank" rel="noopener noreferrer">View &amp; Purchase on doTERRA.com ↗</a>';
+
+    document.getElementById('oilModal').classList.add('active');
+  }
+
+  function closeModal(){
+    var modal = document.getElementById('oilModal');
+    if(modal) modal.classList.remove('active');
+  }
+
+  /* ===================== WHEEL ===================== */
+  function polarToXY(cx, cy, r, angleDeg){
+    var rad = (angleDeg-90) * Math.PI/180;
+    return {x: cx + r*Math.cos(rad), y: cy + r*Math.sin(rad)};
+  }
+
+  function buildWheel(){
+    var wrap = document.getElementById('wheelWrap');
+    if(!wrap) return;
+    wrap.innerHTML = '';
+    var n = symptomMap.length;
+    var step = 360/n;
+    var cx=50, cy=50, r=68;
+
+    symptomMap.forEach(function(s, i){
+      var startAngle = i*step;
+      var endAngle = (i+1)*step;
+      var p1 = polarToXY(cx,cy,r,startAngle);
+      var p2 = polarToXY(cx,cy,r,endAngle);
+
+      var wedge = document.createElement('div');
+      wedge.className = 'wedge';
+      wedge.style.setProperty('--p1', p1.x+'% '+p1.y+'%');
+      wedge.style.setProperty('--p2', p2.x+'% '+p2.y+'%');
+      wedge.style.setProperty('--seg-color', s.color);
+      wedge.title = s.label;
+      wedge.setAttribute('data-goto-symptom', s.key);
+
+      var fill = document.createElement('div');
+      fill.className = 'wedge-fill';
+      wedge.appendChild(fill);
+      wrap.appendChild(wedge);
+
+      var midAngle = startAngle + step/2;
+      var labelPos = polarToXY(cx,cy,40,midAngle);
+      var label = document.createElement('div');
+      label.className = 'wedge-label';
+      label.style.left = labelPos.x+'%';
+      label.style.top = labelPos.y+'%';
+      label.textContent = s.label;
+      wrap.appendChild(label);
+    });
+
+    var center = document.createElement('div');
+    center.className = 'wheel-center';
+    center.textContent = 'How are you feeling?';
+    wrap.appendChild(center);
+
+    var fallback = document.getElementById('wheelListFallback');
+    if(fallback){
+      fallback.innerHTML = '';
+      symptomMap.forEach(function(s){
+        var btn = document.createElement('div');
+        btn.className = 'symptom-row-btn';
+        btn.setAttribute('data-goto-symptom', s.key);
+        btn.innerHTML = '<span><span class="sw" style="background:'+s.color+'"></span>'+escapeHtml(s.label)+'</span><span>→</span>';
+        fallback.appendChild(btn);
+      });
+    }
+  }
+
+  /* ===================== RESULTS ===================== */
+  function showResults(key){
+    var symptom = symptomMap.find(function(s){ return s.key===key; });
+    if(!symptom){ console.error('Unknown symptom key:', key); return; }
+
+    var titleEl = document.getElementById('resultsTitle');
+    var subEl = document.getElementById('resultsSub');
+    if(titleEl) titleEl.textContent = 'Oils for ' + symptom.label;
+    if(subEl) subEl.textContent = 'A starting point for ' + symptom.label.toLowerCase() + ' — tap any product below to see its full profile and purchase link.';
+
+    var grid = document.getElementById('resultsGrid');
+    if(grid){
+      grid.innerHTML = '';
+      symptom.oilNames.forEach(function(name){
+        var oil = findOilByName(name);
+        if(!oil) return;
+        var card = document.createElement('div');
+        card.className = 'result-card';
+        card.setAttribute('data-open-oil', oil.name);
+        card.innerHTML =
+          '<h3>' + escapeHtml(oil.name) + '</h3>' +
+          '<div class="oil-latin">' + escapeHtml(oil.latin) + '</div>' +
+          '<div class="result-usage"><strong>Why it\'s suggested:</strong> ' + escapeHtml(oil.uses) + '</div>';
+        grid.appendChild(card);
+      });
+    }
+    showView('resultsView', {scrollTop:true});
+  }
+
+  /* ===================== USES INDEX ===================== */
+  function renderUsesCatNav(){
+    var nav = document.getElementById('usesCatNav');
+    if(!nav) return;
+    nav.innerHTML = '';
+    usesCategoryOrder.forEach(function(cat){
+      var entry = usesIndex.find(function(c){ return c.category === cat; });
+      var chip = document.createElement('button');
+      chip.className = 'uses-cat-chip';
+      chip.setAttribute('data-scroll-cat', cat);
+      chip.innerHTML = '<span>' + (entry ? entry.icon : '') + '</span><span>' + escapeHtml(cat) + '</span>';
+      nav.appendChild(chip);
+    });
+  }
+
+  function renderUsesList(){
+    var list = document.getElementById('usesList');
+    if(!list) return;
+    list.innerHTML = '';
+
+    var sortedCategories = usesIndex.slice().sort(function(a,b){ return a.category.localeCompare(b.category); });
+
+    sortedCategories.forEach(function(cat){
+      var block = document.createElement('div');
+      block.className = 'uses-category-block';
+      block.id = 'cat-' + slugify(cat.category);
+
+      var head = document.createElement('div');
+      head.className = 'uses-category-head';
+      head.innerHTML =
+        '<span class="icon">' + cat.icon + '</span>' +
+        '<div><h2>' + escapeHtml(cat.category) + '</h2><div class="cat-blurb">' + escapeHtml(cat.blurb) + '</div></div>';
+      block.appendChild(head);
+
+      cat.items.forEach(function(item){
+        var itemEl = document.createElement('div');
+        itemEl.className = 'use-item';
+        var oilPills = (item.oils||[]).map(function(oilName){
+          var exists = findOilByName(oilName);
+          return exists
+            ? '<span class="pill" data-open-oil="' + escapeHtml(oilName) + '">' + escapeHtml(oilName) + '</span>'
+            : '<span class="pill">' + escapeHtml(oilName) + '</span>';
+        }).join('');
+        itemEl.innerHTML =
+          '<h3>' + escapeHtml(item.title) + '</h3>' +
+          '<p>' + escapeHtml(item.body) + '</p>' +
+          (oilPills ? '<div class="pill-row">' + oilPills + '</div>' : '');
+        block.appendChild(itemEl);
+      });
+
+      list.appendChild(block);
+    });
+  }
+
+  function slugify(str){
+    return String(str).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  }
+
+  function scrollToCategory(catName){
+    showView('usesView', {keepScroll:true});
+    requestAnimationFrame(function(){
+      var el = document.getElementById('cat-' + slugify(catName));
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  }
+
+  /* ===================== EVENT DELEGATION ===================== */
+  function initEventDelegation(){
+    document.addEventListener('click', function(e){
+      var target = e.target;
+
+      // Walk up to find elements with our data-attributes (in case of nested elements)
+      var navEl = target.closest('[data-nav]');
+      var openOilEl = target.closest('[data-open-oil]');
+      var gotoSymptomEl = target.closest('[data-goto-symptom]');
+      var closeModalEl = target.closest('[data-close-modal]');
+      var filterEl = target.closest('[data-filter]');
+      var scrollCatEl = target.closest('[data-scroll-cat]');
+      var tabEl = target.closest('[data-target]');
+
+      if(closeModalEl){ e.preventDefault(); closeModal(); return; }
+      if(openOilEl){ e.preventDefault(); openOilModal(openOilEl.getAttribute('data-open-oil')); return; }
+      if(gotoSymptomEl){ e.preventDefault(); showResults(gotoSymptomEl.getAttribute('data-goto-symptom')); return; }
+      if(filterEl){
+        e.preventDefault();
+        var f = filterEl.getAttribute('data-filter');
+        activeFilter = (f === '__all__') ? null : (activeFilter === f ? null : f);
+        renderChips();
+        renderOils();
+        return;
+      }
+      if(scrollCatEl){ e.preventDefault(); scrollToCategory(scrollCatEl.getAttribute('data-scroll-cat')); return; }
+      if(tabEl){ e.preventDefault(); showView(tabEl.getAttribute('data-target'), {restoreScroll:true}); return; }
+      if(navEl){ e.preventDefault(); showView(navEl.getAttribute('data-nav'), {scrollTop:true}); return; }
+
+      // click on overlay background closes modal
+      if(target.id === 'oilModal'){ closeModal(); return; }
+    });
+
+    var searchInput = document.getElementById('oilSearch');
+    if(searchInput){ searchInput.addEventListener('input', renderOils); }
+
+    var sortSelect = document.getElementById('sortSelect');
+    if(sortSelect){
+      sortSelect.addEventListener('change', function(){
+        currentSort = sortSelect.value;
+        renderOils();
+      });
+    }
+
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeModal();
+    });
+  }
+
+  /* ===================== PWA: INSTALL PROMPT ===================== */
+  var deferredInstallPrompt = null;
+  function initInstallBanner(){
+    var banner = document.getElementById('installBanner');
+    if(!banner) return;
+
+    window.addEventListener('beforeinstallprompt', function(e){
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      if(!localStorage.getItem('dropindex_install_dismissed')){
+        banner.classList.add('show');
+      }
+    });
+
+    var ctaBtn = banner.querySelector('.install-cta');
+    var dismissBtn = banner.querySelector('.install-dismiss');
+    if(ctaBtn){
+      ctaBtn.addEventListener('click', function(){
+        if(deferredInstallPrompt){
+          deferredInstallPrompt.prompt();
+          deferredInstallPrompt.userChoice.finally(function(){
+            banner.classList.remove('show');
+          });
+        }
+      });
+    }
+    if(dismissBtn){
+      dismissBtn.addEventListener('click', function(){
+        banner.classList.remove('show');
+        try{ localStorage.setItem('dropindex_install_dismissed','1'); }catch(err){}
+      });
+    }
+
+    window.addEventListener('appinstalled', function(){
+      banner.classList.remove('show');
+    });
+  }
+
+  /* ===================== SERVICE WORKER ===================== */
+  /* Standalone single-file build has no sw.js to register — this is a no-op
+     placeholder kept for parity with the multi-file PWA build. */
+  function initServiceWorker(){
+    // intentionally empty in standalone build
+  }
+
+  /* ===================== INIT ===================== */
+  function init(){
+    buildLeaves();
+    renderChips();
+    renderOils();
+    buildWheel();
+    renderUsesCatNav();
+    renderUsesList();
+    initEventDelegation();
+    initInstallBanner();
+    initServiceWorker();
+
+    // restore view from hash if present (e.g. on reload)
+    var hash = window.location.hash.replace('#','');
+    var validViews = ['home','libraryView','wheelView','resultsView','usesView'];
+    if(hash && validViews.includes(hash) && hash !== 'resultsView'){
+      showView(hash, {skipHash:true, scrollTop:true});
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+
+</script>
+</body>
+</html>
